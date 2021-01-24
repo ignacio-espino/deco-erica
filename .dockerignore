@@ -1,0 +1,12 @@
+.env
+.env.example
+.idea
+.git
+.gitignore
+.dockerignore
+venv/
+docker-compose.yml
+docker-compose-production.yml
+Dockerfile
+.bash_history
+.python_history

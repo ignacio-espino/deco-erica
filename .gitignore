@@ -1,0 +1,8 @@
+.idea
+backend/.env
+*/*.iml
+*/.bash_history
+*/.python_history
+/backend/.cache/pip/
+/backend/.local/
+/backend/staticfiles/

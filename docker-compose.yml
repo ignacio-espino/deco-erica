@@ -1,0 +1,21 @@
+version: "3.7"
+
+services:
+  backend:
+    build: ./backend
+    env_file:
+      - backend/.env
+    volumes:
+      - ./backend/:/app
+    ports:
+      - 8000:8000
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: local
+    stdin_open: true
+    volumes:
+      - ./frontend/:/app
+    ports:
+      - 3000:3000
