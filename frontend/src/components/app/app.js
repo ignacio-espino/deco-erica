@@ -6,6 +6,7 @@ export class Application {
             login: "/login",
             logout: "/logout",
             createTask: "/create-task",
+            createQuotation: "/create-quotation",
         }
     }
 }

@@ -13,17 +13,18 @@ export class NavigationBar extends Component {
         return (
             <Navbar expand="lg" style={{boxShadow: '5px -1px 5px rgba(0,0,0,.6)'}}>
                 <Navbar.Brand href="/">
-                    <img src={"task.png"} height="55" width="auto" className="d-inline-block align-top" alt="Tasks"/>
+                    <img src={"deco.png"} height="55" width="auto" className="d-inline-block align-top" alt="Tasks"/>
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="mr-auto">
                         <Nav.Link href={this.app.URLS.home} active={this.props.homeLinkActive}>
-                            Tasks
+                            Cotizador
                         </Nav.Link>
                         <NavDropdown title="Admin" id="navbar-edit-menu">
-                            <NavDropdown.Item href={this.app.URLS.admin}>Django admin</NavDropdown.Item>
-                            <NavDropdown.Item href={this.app.URLS.createTask}>Create Task</NavDropdown.Item>
+                            <NavDropdown.Item href={this.app.URLS.admin}>BackOffice</NavDropdown.Item>
+                            <NavDropdown.Item href={this.app.URLS.createTask}>Nueva Tarea</NavDropdown.Item>
+                            <NavDropdown.Item href={this.app.URLS.createQuotation}>Nueva Cotización</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
                     <NavDropdown title={this.props.username} id="navbar-user-menu">

@@ -7,6 +7,7 @@ import {LocalStorage} from "./components/api/localStorage";
 import {LogoutView} from "./components/views/logoutView";
 import {CreateTaskView} from "./components/views/createTaskView";
 import {Application} from "./components/app/app";
+import {CreateQuotationView} from "./components/views/createQuotation";
 
 
 class App extends Component {
@@ -22,8 +23,10 @@ class App extends Component {
         this.getTask = this.getTask.bind(this);
         this.getTasks = this.getTasks.bind(this);
         this.createTask = this.createTask.bind(this);
+        this.createQuotation = this.createQuotation.bind(this);
 
         this.createTaskViewComponent = this.createTaskViewComponent.bind(this);
+        this.createQuotationViewComponent = this.createQuotationViewComponent.bind(this);
         this.TasksViewComponent = this.TasksViewComponent.bind(this);
         this.loginViewComponent = this.loginViewComponent.bind(this);
         this.logoutViewComponent = this.logoutViewComponent.bind(this);
@@ -110,6 +113,17 @@ class App extends Component {
         }
     }
 
+    async createQuotation(name, description, callback=()=>{}) {
+        const parameters = {'name': name, 'description': description};
+        const response = await this.apiConnector.post('create-quotation', parameters);
+        if (response.isSuccessful()) {
+            window.alert(`Successful created task: ${response.data().name}`);
+            callback();
+        } else {
+            window.alert(response.message());
+        }
+    }
+
     TasksViewComponent(props) {
         return (
             <TasksView
@@ -128,6 +142,17 @@ class App extends Component {
                 userIsLoggedIn={this.userIsLoggedIn()}
                 username={this.getUsername()}
                 createTask={this.createTask}
+            />
+        );
+    }
+
+    createQuotationViewComponent(props) {
+        return (
+            <CreateQuotationView
+                {...props}
+                userIsLoggedIn={this.userIsLoggedIn()}
+                username={this.getUsername()}
+                createTask={this.createQuotation}
             />
         );
     }
@@ -159,6 +184,7 @@ class App extends Component {
                     <Route path={this.app.URLS.login} render={this.loginViewComponent}/>
                     <Route path={this.app.URLS.logout} render={this.logoutViewComponent}/>
                     <Route path={this.app.URLS.createTask} render={this.createTaskViewComponent}/>
+                    <Route path={this.app.URLS.createQuotation} render={this.createQuotationViewComponent}/>
                     <Route path={this.app.URLS.home} render={this.TasksViewComponent}/>
                 </Switch>
             </Router>
