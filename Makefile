@@ -7,6 +7,10 @@ build:
 make-migrations:
 	docker compose run backend python manage.py makemigrations
 
+.PHONY: show-migrations
+show-migrations:
+	docker compose run backend python manage.py showmigrations
+
 .PHONY: run-migrations
 run-migrations:
 	docker compose run backend python manage.py migrate
