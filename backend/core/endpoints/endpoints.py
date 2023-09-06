@@ -44,8 +44,39 @@ class GetTasksEndpoint(Endpoint, LoggedInRequiredMixin):
         return paginator
 
 
+class GetRoomsEndpoint(Endpoint, LoggedInRequiredMixin):
+    def _get_command(self, request_data) -> Command:
+        return commands.GetRoomsCommand()
+
+
 class CreateTaskEndpoint(Endpoint, LoggedInRequiredMixin):
     def _post_command(self, post_data) -> Command:
         name = post_data['name']
         description = post_data['description']
         return commands.CreateTaskCommand(name=name, description=description)
+
+
+class CreateQuotationEndpoint(Endpoint, LoggedInRequiredMixin):
+    def _post_command(self, post_data) -> Command:
+        data = {
+            'number': post_data['number'],
+            'seller': post_data['seller'],
+            'name': post_data['name'],
+            'cellphone': post_data['cellphone'],
+            'address': post_data['address'],
+            'email': post_data['email'],
+            'date': post_data['date'],
+            'deliveryDate': post_data['deliveryDate'],
+            'discount': post_data['discount'],
+            'remainingSigners': post_data['remainingSigners'],
+        }
+        print(data)
+        return commands.CreateQuotationCommand(data)
+
+
+class CalculatorEndpoint(Endpoint, LoggedInRequiredMixin):
+    def _post_command(self, post_data) -> Command:
+        data = {
+            'entries': post_data['entries'],
+        }
+        return commands.CalculatorCommand(data)

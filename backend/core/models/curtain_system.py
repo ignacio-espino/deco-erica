@@ -3,7 +3,7 @@ from django.db import models
 
 class CurtainSystem(models.Model):
     _name = models.CharField('Nombre', max_length=70, null=True, blank=True)
-    _price = models.DecimalField('Precio', max_digits=10, decimal_places=2)
+    _price = models.DecimalField('Precio', max_digits=10, decimal_places=2, blank=True, null=True)
 
     @classmethod
     def new_from(cls, name, price):

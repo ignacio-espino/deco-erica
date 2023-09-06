@@ -1,0 +1,12 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+    <div class="module">
+        <h2>Cargar archivo CSV</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="csv_file">
+            <input type="submit" value="Cargar">
+        </form>
+    </div>
+{% endblock %}

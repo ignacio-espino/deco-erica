@@ -1,4 +1,9 @@
+import csv
+
+from django.conf.urls import url
 from django.contrib import admin
+from django.forms import forms
+from django.shortcuts import render, redirect
 
 from core.models.curtain_quote_entry import CurtainQuoteEntry
 from core.models.curtain_system import CurtainSystem
@@ -6,12 +11,61 @@ from core.models.customer import Customer
 from core.models.fabric import Fabric
 from core.models.foam import Foam
 from core.models.quote import Quote
+from core.models.quote_entry import QuoteEntry
 from core.models.sewing_method import SewingMethod
 from core.models.upholster_quote_entry import UpholsterQuoteEntry
 
+from django.urls import reverse, path
+from django.http import HttpResponseRedirect
+from core.managment.commands.import_csv import import_csv_data
+
+
+class CsvImportForm(forms.Form):
+    csv_file = forms.FileField()
 
 class FabricAdmin(admin.ModelAdmin):
     list_display = ('code', '__str__', 'price')
+    change_list_template = "admin/fabric_changelist.html"
+
+    def get_urls(self):
+        urls = super().get_urls()
+        my_urls = [
+            path('import-csv/', self.import_csv),
+        ]
+        return my_urls + urls
+
+    def import_csv(self, request):
+        if request.method == "POST":
+            csv_file = request.FILES["csv_file"]
+            reader = csv.reader(csv_file)
+            import_csv_data(csv_file)
+            self.message_user(request, "Your csv file has been imported")
+            return redirect("..")
+        form = CsvImportForm()
+        payload = {"form": form}
+        return render(
+            request, "admin/csv_form.html", payload
+        )
+
+    # def import_csv_view(self, request):
+    #     print('HOLAAA')
+    #     if request.method == 'POST' and request.FILES.get('csv_file'):
+    #         csv_file = request.FILES['csv_file']
+    #         import_csv_data(csv_file)
+    #         self.message_user(request, 'Datos importados exitosamente')
+    #         return HttpResponseRedirect(reverse('admin:tu_app_tumodelo_changelist'))
+    #
+    #     context = {'opts': self.model._meta}
+    #     return render(request, 'core/admin/fabric/templates/admin/core/fabric/import_csv_button.html', context)
+    #
+    # import_csv_view.short_description = 'Cargar archivo CSV'
+    #
+    # def get_urls(self):
+    #     urls = super().get_urls()
+    #     my_urls = [
+    #         path('import-csv/', self.import_csv_view),
+    #     ]
+    #     return my_urls + urls
 
 
 class CurtainSystemAdmin(admin.ModelAdmin):
@@ -26,8 +80,17 @@ class FoamAdmin(admin.ModelAdmin):
     pass
 
 
+class CurtainQuoteEntryInline(admin.TabularInline):
+    model = CurtainQuoteEntry
+    extra = 1
+
+
 class QuoteAdmin(admin.ModelAdmin):
-    pass
+    inlines = [CurtainQuoteEntryInline]
+    readonly_fields = ('fecha',)
+
+    def fecha(self, obj):
+        return obj.date().strftime('%d-%m-%Y')
 
 
 class SewingAdmin(admin.ModelAdmin):

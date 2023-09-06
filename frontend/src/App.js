@@ -22,8 +22,10 @@ class App extends Component {
 
         this.getTask = this.getTask.bind(this);
         this.getTasks = this.getTasks.bind(this);
+        this.getRooms = this.getRooms.bind(this);
         this.createTask = this.createTask.bind(this);
         this.createQuotation = this.createQuotation.bind(this);
+        this.calculateMoneyValues = this.calculateMoneyValues.bind(this);
 
         this.createTaskViewComponent = this.createTaskViewComponent.bind(this);
         this.createQuotationViewComponent = this.createQuotationViewComponent.bind(this);
@@ -85,12 +87,19 @@ class App extends Component {
     }
 
     async getTasks(queryString='', page=0, resultsPerPage=50) {
+        debugger;
         const parameters = {
             'query': encodeURIComponent(queryString),
             'page': page,
             'results_per_page': resultsPerPage,
         };
         const response = await this.apiConnector.get('tasks', parameters);
+        return response.data();
+    }
+
+    async getRooms() {
+        const parameters = {};
+        const response = await this.apiConnector.get('rooms', parameters);
         return response.data();
     }
 
@@ -113,15 +122,55 @@ class App extends Component {
         }
     }
 
-    async createQuotation(name, description, callback=()=>{}) {
-        const parameters = {'name': name, 'description': description};
+    async createQuotation(
+        number,
+        seller,
+        name,
+        cellphone,
+        address,
+        email,
+        date,
+        deliveryDate,
+        discount,
+        remainingSigners,
+        callback = () => {
+        }) {
+        const parameters = {
+            'number': number,
+            'seller': seller,
+            'name': name,
+            'cellphone': cellphone,
+            'address': address,
+            'email': email,
+            'date': date,
+            'deliveryDate': deliveryDate,
+            'discount': discount,
+            'remainingSigners': remainingSigners,
+        };
+        console.log(parameters)
         const response = await this.apiConnector.post('create-quotation', parameters);
         if (response.isSuccessful()) {
-            window.alert(`Successful created task: ${response.data().name}`);
+            window.alert('Successful created task');
             callback();
         } else {
             window.alert(response.message());
         }
+    }
+
+    async calculateMoneyValues(remainingSigners, callback = () => {}) {
+        debugger;
+        const parameters = {
+            'entries' : remainingSigners
+        }
+        const response = await this.apiConnector.post('calculate-money-values', parameters);
+        if (response.isSuccessful()) {
+            window.alert('valores calculados');
+            debugger;
+            callback(response.data());
+        } else {
+            window.alert(response.message());
+        }
+
     }
 
     TasksViewComponent(props) {
@@ -153,6 +202,8 @@ class App extends Component {
                 userIsLoggedIn={this.userIsLoggedIn()}
                 username={this.getUsername()}
                 createTask={this.createQuotation}
+                calculateValues={this.calculateMoneyValues}
+                getRooms={this.getRooms}
             />
         );
     }

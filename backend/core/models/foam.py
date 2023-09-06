@@ -3,7 +3,7 @@ from django.db import models
 
 class Foam(models.Model):
     _type = models.CharField('Tipo', max_length=70, null=True, blank=True)
-    _price = models.DecimalField('Precio', max_digits=10, decimal_places=2)
+    _price = models.DecimalField('Precio', max_digits=10, decimal_places=2, blank=True, null=True)
 
     def __str__(self):
         return f'{self.type()}'

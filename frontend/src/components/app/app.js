@@ -7,6 +7,7 @@ export class Application {
             logout: "/logout",
             createTask: "/create-task",
             createQuotation: "/create-quotation",
+            // createQuotation: "/calculate-money-values",
         }
     }
 }

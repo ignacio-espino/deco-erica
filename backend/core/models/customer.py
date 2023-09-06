@@ -4,7 +4,7 @@ from django.db import models
 class Customer(models.Model):
     _full_name = models.CharField('Nombre completo', max_length=70, null=True, blank=True)
     _cell_number = models.CharField('Celular', max_length=20, null=True, blank=True)
-    _email = models.EmailField('Email', unique=True, blank=True, null=True)
+    _email = models.EmailField('Email', blank=True, null=True)
     _address = models.CharField('Dirección', max_length=200, null=True, blank=True)
 
     @classmethod
