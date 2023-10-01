@@ -271,15 +271,17 @@ class CalculatorCommand(Command):
         return []
 
     def _execute_from_successful_validation(self, result):
+        # TODO Adaptar con las cuentas necesarias
         new_data = []
         for index in range(len(self._data['entries'])):
             entry = self._data['entries'][index]
-            new_data.append({f'{index}': {
-                'systemPrice': entry['systemPrice'] + 777,
-                'taylorPrice': entry['taylorPrice'] + 777,
-                'sewingPrice': entry['sewingPrice'] + 777,
-                'subtotal': entry['subtotal'] + 777,
-                'curtainTotal': entry['curtainTotal'] + 777
-            }})
+            data_entry = entry
+            data_entry['systemPrice'] = entry['systemPrice'] + 777
+            data_entry['taylorPrice'] = entry['taylorPrice'] + 777
+            data_entry['sewingPrice'] = entry['sewingPrice'] + 777
+            data_entry['subtotal'] = entry['subtotal'] + 777
+            data_entry['curtainTotal'] = entry['curtainTotal'] + 777
+            data_entry['installationCost'] = entry['installationCost'] + 777 if entry['installationCost'] else 0
 
+            new_data.append({f'{index}': data_entry})
         result.set_object(new_data)

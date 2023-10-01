@@ -44,7 +44,6 @@ export class CreateQuotationView extends Component {
         }
 
         this.reloadPage = this.reloadPage.bind(this);
-        // this.handleChange = this.handleChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.calculateOnSumbit = this.calculateOnSumbit.bind(this);
         this.updateMoneyValues = this.updateMoneyValues.bind(this);
@@ -94,8 +93,25 @@ export class CreateQuotationView extends Component {
     }
 
     calculateOnSumbit(values) {
-        debugger;
-        console.log('HOLI');
+        // TODO muy raro hacer esto aca... refactorizar
+        this.setState({
+            number: values.number,
+            seller: values.seller,
+            name: values.name,
+            cellphone: values.cellphone,
+            address: values.address,
+            email: values.email,
+            discount: values.discount,
+            quantity: values.quantity,
+            room: values.room,
+            width: values.width,
+            height: values.height,
+            product: values.product,
+            color: values.color,
+            requiresInstallation: values.requiresInstallation,
+            remainingEntries: values.remainingEntries,
+        })
+
         this.props.calculateValues(
             values.remainingEntries,
             this.updateMoneyValues);
@@ -103,17 +119,12 @@ export class CreateQuotationView extends Component {
 
     updateMoneyValues(updatedValues) {
         updatedValues.map( (entry, index) => {
-            const keyy = `remainingEntries.${index}.systemPrice`;
+            let currentStateEntry = this.state.remainingEntries;
+            currentStateEntry[index] = entry[index];
             this.setState({
-                // 'remainingEntries.0.systemPrice' : entry[0]['systemPrice']
-                'remainingEntries' : [{
-                    'systemPrice' : entry[0]['systemPrice']
-                    }],
-                'seller': 'Falabella',
+                remainingEntries : currentStateEntry
             })
         })
-        console.log(updatedValues)
-        console.log(this.state)
     }
 
     render() {
@@ -127,36 +138,29 @@ export class CreateQuotationView extends Component {
                         initialValues={{
                             number: this.state.number || 0,
                             seller: this.state.seller || '',
-                            name: "",
-                            cellphone: "",
-                            address: "",
-                            email: "",
+                            name: this.state.name || "",
+                            cellphone: this.state.cellphone || "",
+                            address: this.state.address || "",
+                            email: this.state.email || "",
                             date: null,
                             deliveryDate: null,
-                            discount: 0,
-                            quantity: 0,
-                            room: "",
-                            width: 0,
-                            height: 0,
-                            product: " ",
-                            color: "",
-                            system: [],
-                            sewing: [],
-                            systemPrice: 0,
-                            sewingPrice: 0,
-                            taylorPrice: 0,
-                            subtotal: 0,
-                            curtainTotal: 0,
-                            requiresInstallation: false,
-                            installationCost: 0,
-                            remainingEntries: this.state.remainingEntries || [],
-                            addresss: {
-                                country: {
-                                    label: "United Kingdom",
-                                    iso: "gb",
-                                    country: "United Kingdom"
-                                },
-                            }
+                            discount: this.state.discount || 0,
+                            quantity: this.state.quantity || 0,
+                            room: this.state.room || "",
+                            width: this.state.width || 0,
+                            height: this.state.height || 0,
+                            product: this.state.product || " ",
+                            color: this.state.color || "",
+                            system: this.state.system || [],
+                            sewing: this.state.sewing || [],
+                            systemPrice: this.state.systemPrice || 0,
+                            sewingPrice: this.state.sewingPrice || 0,
+                            taylorPrice: this.state.taylorPrice || 0,
+                            subtotal: this.state.subtotal || 0,
+                            curtainTotal: this.state.curtainTotal || 0,
+                            requiresInstallation: this.state.requiresInstallation || false,
+                            installationCost: this.state.installationCost || 0,
+                            remainingEntries: this.state.remainingEntries || []
                         }}
                         validationSchema={this.validatorSchema()}
                         onSubmit={(values) => {
