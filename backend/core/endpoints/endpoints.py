@@ -68,7 +68,7 @@ class CreateQuotationEndpoint(Endpoint, LoggedInRequiredMixin):
             'date': post_data['date'],
             'deliveryDate': post_data['deliveryDate'],
             'discount': post_data['discount'],
-            'remainingSigners': post_data['remainingSigners'],
+            'remainingEntries': post_data['remainingEntries'],
         }
         print(data)
         return commands.CreateQuotationCommand(data)

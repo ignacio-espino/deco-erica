@@ -2,35 +2,44 @@ import React, {Component} from "react";
 import {Field, FieldArray} from "formik";
 import {
     Accordion,
+    AccordionActions,
     AccordionDetails,
     AccordionSummary,
+    Autocomplete,
+    Box,
+    Checkbox,
     Grid,
     IconButton,
-    Typography,
+    MenuItem,
     TextField,
-    AccordionActions,
-    Box, MenuItem, Autocomplete, Checkbox
+    Typography
 } from "@mui/material";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PersonIcon from "@mui/icons-material/Person";
 import Delete from "@mui/icons-material/Delete";
-import {Button, Row} from "react-bootstrap";
 
 
 export default class QuoteEntry extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {expandedSections: Array(this.remainingSigners().length).fill(true)}
+        this.state = {
+            expandedSections: Array(this.xRemainingEntries().length).fill(true),
+            isReadyToCalculate: false
+        }
     }
 
-    remainingSigners() {
-        return this.props.formState.values.remainingSigners;
+    calculate() {
+        return ''
+    }
+    
+    xRemainingEntries() {
+        return this.props.formState.values.remainingEntries;
     }
 
     render() {
-        return <FieldArray name="remainingSigners">
+        return <FieldArray name="remainingEntries">
             {(fieldArray) => {
                 return this.renderList(fieldArray)
             }}
@@ -39,20 +48,20 @@ export default class QuoteEntry extends Component {
 
     renderList(fieldArray) {
         return <>
-            {this.renderRemainingSignerList(fieldArray)}
-            {this.renderAddSigner(fieldArray)}
+            {this.renderRemainingEntriesList(fieldArray)}
+            {this.renderAddEntry(fieldArray)}
         </>
     }
 
-    renderRemainingSignerList(fieldArray) {
-        return this.remainingSigners().map((signer, signerIndex) => {
-            return this.renderSigner(signer, signerIndex, fieldArray)
+    renderRemainingEntriesList(fieldArray) {
+        return this.xRemainingEntries().map((entry, entryIndex) => {
+            return this.renderEntry(entry, entryIndex, fieldArray)
         })
     }
 
-    renderAddSigner(fieldArray) {
+    renderAddEntry(fieldArray) {
         return <Accordion expanded={false} onChange={() => {
-            fieldArray.push(this.newSigner())
+            fieldArray.push(this.newEntry())
             let expandedSections = this.state.expandedSections;
             expandedSections.push(true)
             this.setState({expandedSections})
@@ -60,7 +69,7 @@ export default class QuoteEntry extends Component {
             <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
                 <Grid container justifyContent="space-between">
                     <Grid item>
-                        <Typography> {this.remainingSigners().length === 0 ? 'Añadir una entrada' : 'Añadir otra entrada'} </Typography>
+                        <Typography> {this.xRemainingEntries().length === 0 ? 'Añadir una entrada' : 'Añadir otra entrada'} </Typography>
                     </Grid>
                     <Grid item><AddCircleOutlinedIcon color="primary"/></Grid>
                 </Grid>
@@ -68,35 +77,35 @@ export default class QuoteEntry extends Component {
         </Accordion>
     }
 
-    renderSigner(signer, signerIndex, fieldArray) {
+    renderEntry(entry, entryIndex, fieldArray) {
         return <Accordion
             elevation={3}
             sx={{marginY: "1em"}}
-            expanded={this.state.expandedSections.at(signerIndex)}
+            expanded={this.state.expandedSections.at(entryIndex)}
             onChange={() => {
                 let expandedSections = this.state.expandedSections;
-                expandedSections[signerIndex] = !expandedSections[signerIndex]
+                expandedSections[entryIndex] = !expandedSections[entryIndex]
                 this.setState({expandedSections})
             }}>
             <AccordionSummary title="Colapsar sección" expandIcon={<ExpandMoreIcon/>}>
                 <PersonIcon/>
                 <Box sx={{ mx: 3 }}>
-                    <Typography color="textPrimary" variant="h5" fontWeight="bold"> Entrada {signerIndex + 1} </Typography>
+                    <Typography color="textPrimary" variant="h5" fontWeight="bold"> Entrada {entryIndex + 1} </Typography>
                 </Box>
             </AccordionSummary>
             <AccordionDetails>
                 <Grid container spacing={2} columnSpacing={2} >
-                {this.xxx(signer, signerIndex)}
-                {this.renderSignerPersonalDataSection(signer, signerIndex)}
-                {this.renderCurtainMoneyEntryQuoteFields(signer, signerIndex)}
+                {this.renderRequieresInstallation(entryIndex)}
+                {this.renderEntryDataSection(entryIndex)}
+                {this.renderCurtainMoneyEntryQuoteFields(entryIndex)}
                 </Grid>
             </AccordionDetails>
             <AccordionActions>
                 <IconButton color="primary" aria-label="delete" title="Eliminar entrada"
                             onClick={() => {
-                                fieldArray.remove(signerIndex)
+                                fieldArray.remove(entryIndex)
                                 let expandedSections = this.state.expandedSections;
-                                expandedSections.splice(signerIndex, 1);
+                                expandedSections.splice(entryIndex, 1);
                                 this.setState({expandedSections})
                             }}>
                     <Delete/>
@@ -105,11 +114,11 @@ export default class QuoteEntry extends Component {
         </Accordion>
     }
 
-    xxx(signer, signerIndex) {
+    renderRequieresInstallation(entryIndex) {
         return (
             <Grid item md={6} xs={12}>
                 <Checkbox id="4"
-                          name={`remainingSigners.${signerIndex}.requiresInstallation`}
+                          name={`remainingEntries.${entryIndex}.requiresInstallation`}
                           type="checkbox"
                           defaultChecked={false}
                           onChange={this.props.formState.handleChange}
@@ -130,14 +139,14 @@ export default class QuoteEntry extends Component {
         )
     }
 
-    renderSignerPersonalDataSection(signer, signerIndex) {
+    renderEntryDataSection(entryIndex) {
         return (<>
             <Grid container item spacing={2}>
                 <Grid item lg={1}>
                     <Field
                         as={TextField}
                         type="number"
-                        name={`remainingSigners.${signerIndex}.quantity`}
+                        name={`remainingEntries.${entryIndex}.quantity`}
                         label="Cantidad"
                         onChange={this.props.formState.handleChange}
                         onBlur={this.props.formState.handleBlur}
@@ -147,7 +156,7 @@ export default class QuoteEntry extends Component {
                 <Grid item lg={2}>
                     <Field
                         as={TextField}
-                        name={`remainingSigners.${signerIndex}.room`}
+                        name={`remainingEntries.${entryIndex}.room`}
                         label="Ambiente"
                         onChange={this.props.formState.handleChange}
                         onBlur={this.props.formState.handleBlur}
@@ -169,7 +178,7 @@ export default class QuoteEntry extends Component {
                     <Field
                         as={TextField}
                         type="number"
-                        name={`remainingSigners.${signerIndex}.width`}
+                        name={`remainingEntries.${entryIndex}.width`}
                         label="Ancho"
                         onChange={this.props.formState.handleChange}
                         onBlur={this.props.formState.handleBlur}
@@ -180,7 +189,7 @@ export default class QuoteEntry extends Component {
                     <Field
                         as={TextField}
                         type="number"
-                        name={`remainingSigners.${signerIndex}.height`}
+                        name={`remainingEntries.${entryIndex}.height`}
                         label="Alto"
                         onChange={this.props.formState.handleChange}
                         onBlur={this.props.formState.handleBlur}
@@ -192,12 +201,12 @@ export default class QuoteEntry extends Component {
                         options={(this.props.availableProducts.length > 0) ? this.props.availableProducts : []} // part of state that holds Autocomplete options
                         getOptionLabel={(option) => option[1] || ''}
                         //value={this.props.formState.values.product} // the part of state what holds the user input
-                        onChange={(_, value) => this.props.formState.setFieldValue(`remainingSigners.${signerIndex}.product`, value || {})}
+                        onChange={(_, value) => this.props.formState.setFieldValue(`remainingEntries.${entryIndex}.product`, value || {})}
                         onBlur={this.props.formState.handleBlur} // so formik can see the forms touched state
                         renderInput={(params) => (
                             <TextField
                                 {...params}
-                                name={`remainingSigners.${signerIndex}.product`}
+                                name={`remainingEntries.${entryIndex}.product`}
                                 label="Tela"
                                 onBlur={this.props.formState.handleBlur}
                             />
@@ -208,7 +217,7 @@ export default class QuoteEntry extends Component {
                 <Grid item lg={1}>
                     <Field
                         as={TextField}
-                        name={`remainingSigners.${signerIndex}.color`}
+                        name={`remainingEntries.${entryIndex}.color`}
                         label="Color"
                         onChange={this.props.formState.handleChange}
                         onBlur={this.props.formState.handleBlur}
@@ -218,7 +227,7 @@ export default class QuoteEntry extends Component {
                 <Grid item lg={2}>
                     <Field
                         as={TextField}
-                        name={`remainingSigners.${signerIndex}.system`}
+                        name={`remainingEntries.${entryIndex}.system`}
                         label="Sistema"
                         onChange={this.props.formState.handleChange}
                         onBlur={this.props.formState.handleBlur}
@@ -239,7 +248,7 @@ export default class QuoteEntry extends Component {
                 <Grid item lg={2}>
                     <Field
                         as={TextField}
-                        name={`remainingSigners.${signerIndex}.sewing`}
+                        name={`remainingEntries.${entryIndex}.sewing`}
                         label="Confección"
                         onChange={this.props.formState.handleChange}
                         onBlur={this.props.formState.handleBlur}
@@ -262,13 +271,13 @@ export default class QuoteEntry extends Component {
         </>)
     }
 
-    renderCurtainMoneyEntryQuoteFields(signer, signerIndex) {
+    renderCurtainMoneyEntryQuoteFields(entryIndex) {
         return <Grid container item spacing={2}>
                 <Grid item lg={2}>
                     <Field
                         as={TextField}
                         type="number"
-                        name={`remainingSigners.${signerIndex}.taylorPrice`}
+                        name={`remainingEntries.${entryIndex}.taylorPrice`}
                         label="Precio de la tela"
                         onChange={this.props.formState.handleChange}
                         onBlur={this.props.formState.handleBlur}
@@ -279,7 +288,7 @@ export default class QuoteEntry extends Component {
                     <Field
                         as={TextField}
                         type="number"
-                        name={`remainingSigners.${signerIndex}.systemPrice`}
+                        name={`remainingEntries.${entryIndex}.systemPrice`}
                         label="Precio de sistema"
                         onChange={this.props.formState.handleChange}
                         onBlur={this.props.formState.handleBlur}
@@ -290,7 +299,7 @@ export default class QuoteEntry extends Component {
                     <Field
                         as={TextField}
                         type="number"
-                        name={`remainingSigners.${signerIndex}.sewingPrice`}
+                        name={`remainingEntries.${entryIndex}.sewingPrice`}
                         label="Precio de Confección"
                         onChange={this.props.formState.handleChange}
                         onBlur={this.props.formState.handleBlur}
@@ -301,7 +310,7 @@ export default class QuoteEntry extends Component {
                 <Field
                     as={TextField}
                     type="number"
-                    name={`remainingSigners.${signerIndex}.installationCost`}
+                    name={`remainingEntries.${entryIndex}.installationCost`}
                     label="Costo de instalación"
                     onChange={this.props.formState.handleChange}
                     onBlur={this.props.formState.handleBlur}
@@ -311,7 +320,7 @@ export default class QuoteEntry extends Component {
                     <Field
                         as={TextField}
                         type="number"
-                        name={`remainingSigners.${signerIndex}.subtotal`}
+                        name={`remainingEntries.${entryIndex}.subtotal`}
                         label="Subtotal"
                         onChange={this.props.formState.handleChange}
                         onBlur={this.props.formState.handleBlur}
@@ -322,7 +331,7 @@ export default class QuoteEntry extends Component {
                     <Field
                         as={TextField}
                         type="number"
-                        name={`remainingSigners.${signerIndex}.curtainTotal`}
+                        name={`remainingEntries.${entryIndex}.curtainTotal`}
                         label="Total"
                         onChange={this.props.formState.handleChange}
                         onBlur={this.props.formState.handleBlur}
@@ -332,7 +341,7 @@ export default class QuoteEntry extends Component {
         </Grid>;
     }
 
-    newSigner() {
+    newEntry() {
         return {
             quantity: 0,
             room: '',

@@ -132,7 +132,7 @@ class App extends Component {
         date,
         deliveryDate,
         discount,
-        remainingSigners,
+        remainingEntries,
         callback = () => {
         }) {
         const parameters = {
@@ -145,7 +145,7 @@ class App extends Component {
             'date': date,
             'deliveryDate': deliveryDate,
             'discount': discount,
-            'remainingSigners': remainingSigners,
+            'remainingEntries': remainingEntries,
         };
         console.log(parameters)
         const response = await this.apiConnector.post('create-quotation', parameters);
@@ -157,10 +157,10 @@ class App extends Component {
         }
     }
 
-    async calculateMoneyValues(remainingSigners, callback = () => {}) {
+    async calculateMoneyValues(remainingEntries, callback = () => {}) {
         debugger;
         const parameters = {
-            'entries' : remainingSigners
+            'entries' : remainingEntries
         }
         const response = await this.apiConnector.post('calculate-money-values', parameters);
         if (response.isSuccessful()) {

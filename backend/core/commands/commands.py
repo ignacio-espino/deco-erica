@@ -229,7 +229,7 @@ class CreateQuotationCommand(Command):
                                      address=self._data['address'],
                                      email=self._data['email'])
         customer.save()
-        entries = self._data['remainingSigners']
+        entries = self._data['remainingEntries']
         requires_installation = False
         for entry in entries:
             if entry['requiresInstallation']:

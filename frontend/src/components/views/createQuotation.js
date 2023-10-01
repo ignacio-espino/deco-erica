@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
 import {Helmet} from 'react-helmet';
 import {MainLayout} from "../layout/mainLayout";
-import {Button, Row} from "react-bootstrap";
+import {Button} from "react-bootstrap";
 import {Box, Grid, TextField} from "@mui/material";
 import * as Yup from "yup";
 import {Field, Formik} from "formik";
-import DateField from "../dateField";
 import QuoteEntry from "./quoteEntry";
 
 export class CreateQuotationView extends Component {
@@ -40,7 +39,7 @@ export class CreateQuotationView extends Component {
             curtainTotal: "",
             requiresInstallation: false,
             availableRooms: [],
-            remainingSigners: [],
+            remainingEntries: [],
             submitAction: undefined,
         }
 
@@ -90,7 +89,7 @@ export class CreateQuotationView extends Component {
             values.date,
             values.deliveryDate,
             values.discount,
-            values.remainingSigners,
+            values.remainingEntries,
             this.reloadPage);
     }
 
@@ -98,16 +97,16 @@ export class CreateQuotationView extends Component {
         debugger;
         console.log('HOLI');
         this.props.calculateValues(
-            values.remainingSigners,
+            values.remainingEntries,
             this.updateMoneyValues);
     }
 
     updateMoneyValues(updatedValues) {
         updatedValues.map( (entry, index) => {
-            const keyy = `remainingSigners.${index}.systemPrice`;
+            const keyy = `remainingEntries.${index}.systemPrice`;
             this.setState({
-                // 'remainingSigners.0.systemPrice' : entry[0]['systemPrice']
-                'remainingSigners' : [{
+                // 'remainingEntries.0.systemPrice' : entry[0]['systemPrice']
+                'remainingEntries' : [{
                     'systemPrice' : entry[0]['systemPrice']
                     }],
                 'seller': 'Falabella',
@@ -150,7 +149,7 @@ export class CreateQuotationView extends Component {
                             curtainTotal: 0,
                             requiresInstallation: false,
                             installationCost: 0,
-                            remainingSigners: this.state.remainingSigners || [],
+                            remainingEntries: this.state.remainingEntries || [],
                             addresss: {
                                 country: {
                                     label: "United Kingdom",
