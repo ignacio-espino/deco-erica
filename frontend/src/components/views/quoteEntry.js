@@ -25,14 +25,10 @@ export default class QuoteEntry extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            expandedSections: Array(this.xRemainingEntries().length).fill(true),
-            isReadyToCalculate: false
+            expandedSections: Array(this.xRemainingEntries().length).fill(true)
         }
     }
 
-    calculate() {
-        return ''
-    }
     
     xRemainingEntries() {
         return this.props.formState.values.remainingEntries;
