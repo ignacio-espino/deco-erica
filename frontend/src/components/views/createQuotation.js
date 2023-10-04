@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Helmet} from 'react-helmet';
 import {MainLayout} from "../layout/mainLayout";
 import {Button} from "react-bootstrap";
-import {Box, Grid, TextField} from "@mui/material";
+import {Box, Grid, TextField, Typography} from "@mui/material";
 import * as Yup from "yup";
 import {Field, Formik} from "formik";
 import QuoteEntry from "./quoteEntry";
@@ -41,6 +41,12 @@ export class CreateQuotationView extends Component {
             availableRooms: [],
             remainingEntries: [],
             submitAction: undefined,
+            fabricTotalCost: 0,
+            sewingTotalCost: 0,
+            systemTotalCost: 0,
+            installingTotalCost: 0,
+            subtotalTotalCost: 0,
+            totalCost: 0,
         }
 
         this.reloadPage = this.reloadPage.bind(this);
@@ -118,12 +124,21 @@ export class CreateQuotationView extends Component {
     }
 
     updateMoneyValues(updatedValues) {
+        let totals = updatedValues.pop()
         updatedValues.map( (entry, index) => {
             let currentStateEntry = this.state.remainingEntries;
             currentStateEntry[index] = entry[index];
             this.setState({
                 remainingEntries : currentStateEntry
             })
+        })
+        this.setState({
+            fabricTotalCost: totals['totals'].fabricTotalCost,
+            sewingTotalCost: totals['totals'].sewingTotalCost,
+            systemTotalCost: totals['totals'].systemTotalCost,
+            installingTotalCost: totals['totals'].installingTotalCost,
+            subtotalTotalCost: totals['totals'].subtotalTotalCost,
+            totalCost: totals['totals'].totalCost,
         })
     }
 
@@ -198,10 +213,34 @@ export class CreateQuotationView extends Component {
             {this.getQuotationSellerAndNumber(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit)}
             {this.getCustomerFields(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit)}
             {this.getOtherFields(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit)}
+            {this.getTotals(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit)}
             {this.renderCurtainEntryQuote(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit)}
             {this.renderSubmitButton(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit)}
         </Box>
 
+    }
+
+    getTotals(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit){
+        return <Grid container spacing={2}>
+            <Grid item spacing={0}>
+                <Typography> Total tela: ${this.state.fabricTotalCost} </Typography>
+            </Grid>
+            <Grid item spacing={0}>
+                <Typography> Total confección: ${this.state.sewingTotalCost} </Typography>
+            </Grid>
+            <Grid item spacing={0}>
+                <Typography> Total sistema: ${this.state.systemTotalCost} </Typography>
+            </Grid>
+            <Grid item spacing={0}>
+                <Typography> Total instalacion: ${this.state.installingTotalCost} </Typography>
+            </Grid>
+            <Grid item spacing={0}>
+                <Typography> Total subtotal: ${this.state.subtotalTotalCost} </Typography>
+            </Grid>
+            <Grid item spacing={0}>
+                <Typography> Total: ${this.state.totalCost} </Typography>
+            </Grid>
+        </Grid>;
     }
 
     renderSubmitButton(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit) {

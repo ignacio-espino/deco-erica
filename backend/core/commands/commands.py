@@ -273,7 +273,14 @@ class CalculatorCommand(Command):
     def _execute_from_successful_validation(self, result):
         # TODO Adaptar con las cuentas necesarias
         new_data = []
-        for index in range(len(self._data['entries'])):
+        fabric_total_cost = 0
+        sewing_total_cost = 0
+        system_total_cost = 0
+        installing_total_cost = 0
+        subtotal_total_cost = 0
+        total_cost = 0
+        amount_of_entries = len(self._data['entries'])
+        for index in range(amount_of_entries):
             entry = self._data['entries'][index]
             data_entry = entry
             data_entry['systemPrice'] = entry['systemPrice'] + 777
@@ -283,5 +290,22 @@ class CalculatorCommand(Command):
             data_entry['curtainTotal'] = entry['curtainTotal'] + 777
             data_entry['installationCost'] = entry['installationCost'] + 777 if entry['installationCost'] else 0
 
+            fabric_total_cost += data_entry['taylorPrice']
+            sewing_total_cost += data_entry['sewingPrice']
+            system_total_cost += data_entry['systemPrice']
+            installing_total_cost += data_entry['installationCost']
+            subtotal_total_cost += data_entry['subtotal']
+            total_cost += data_entry['installationCost']
+
             new_data.append({f'{index}': data_entry})
+
+        totals = {
+            "fabricTotalCost": fabric_total_cost,
+            "sewingTotalCost": sewing_total_cost,
+            "systemTotalCost": system_total_cost,
+            "installingTotalCost": installing_total_cost,
+            "subtotalTotalCost": subtotal_total_cost,
+            "totalCost": total_cost,
+        }
+        new_data.append({"totals": totals})
         result.set_object(new_data)
