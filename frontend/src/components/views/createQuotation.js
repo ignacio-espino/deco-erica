@@ -5,7 +5,8 @@ import {Button} from "react-bootstrap";
 import {Box, Grid, TextField, Typography} from "@mui/material";
 import * as Yup from "yup";
 import {Field, Formik} from "formik";
-import QuoteEntry from "./quoteEntry";
+import CurtainQuoteEntry from "./curtainQuoteEntry";
+import UpholsterQuoteEntry from "./upholsterQuoteEntry";
 
 export class CreateQuotationView extends Component {
     constructor(props) {
@@ -40,6 +41,7 @@ export class CreateQuotationView extends Component {
             requiresInstallation: false,
             availableRooms: [],
             remainingEntries: [],
+            remainingUpholsterEntries: [],
             submitAction: undefined,
             fabricTotalCost: 0,
             sewingTotalCost: 0,
@@ -47,6 +49,14 @@ export class CreateQuotationView extends Component {
             installingTotalCost: 0,
             subtotalTotalCost: 0,
             totalCost: 0,
+            upholsterQuantity: 0,
+            foam: [],
+            upholsterSewing: '',
+            upholsterTaylorPrice: 0,
+            upholsterSewingPrice: 0,
+            foamPrice: 0,
+            foamTotalCost: 0,
+            upholsterTotal: 0,
         }
 
         this.reloadPage = this.reloadPage.bind(this);
@@ -73,6 +83,7 @@ export class CreateQuotationView extends Component {
                 system: rooms['systems'],
                 sewing: rooms['sewing_methods'],
                 availableProducts: rooms['fabrics'],
+                foam: rooms['foams'],
             });
         }
     }
@@ -95,6 +106,7 @@ export class CreateQuotationView extends Component {
             values.deliveryDate,
             values.discount,
             values.remainingEntries,
+            values.remainingUpholsterEntries,
             this.reloadPage);
     }
 
@@ -116,10 +128,12 @@ export class CreateQuotationView extends Component {
             color: values.color,
             requiresInstallation: values.requiresInstallation,
             remainingEntries: values.remainingEntries,
+            remainingUpholsterEntries: values.remainingUpholsterEntries,
         })
 
         this.props.calculateValues(
             values.remainingEntries,
+            values.remainingUpholsterEntries,
             this.updateMoneyValues);
     }
 
@@ -139,6 +153,7 @@ export class CreateQuotationView extends Component {
             installingTotalCost: totals['totals'].installingTotalCost,
             subtotalTotalCost: totals['totals'].subtotalTotalCost,
             totalCost: totals['totals'].totalCost,
+            foamTotalCost: totals['totals'].foamTotalCost,
         })
     }
 
@@ -173,9 +188,17 @@ export class CreateQuotationView extends Component {
                             taylorPrice: this.state.taylorPrice || 0,
                             subtotal: this.state.subtotal || 0,
                             curtainTotal: this.state.curtainTotal || 0,
+                            upholsterQuantity: this.state.upholsterQuantity || 0,
+                            foam: this.state.foam || "",
+                            upholsterSewing: this.state.upholsterSewing || "",
+                            upholsterTaylorPrice: this.state.upholsterTaylorPrice || 0,
+                            upholsterSewingPrice: this.state.upholsterSewingPrice || 0,
+                            foamPrice: this.state.foamPrice || 0,
+                            upholsterTotal: this.state.upholsterTotal || 0,
                             requiresInstallation: this.state.requiresInstallation || false,
                             installationCost: this.state.installationCost || 0,
-                            remainingEntries: this.state.remainingEntries || []
+                            remainingEntries: this.state.remainingEntries || [],
+                            remainingUpholsterEntries: this.state.remainingUpholsterEntries || []
                         }}
                         validationSchema={this.validatorSchema()}
                         onSubmit={(values) => {
@@ -215,6 +238,7 @@ export class CreateQuotationView extends Component {
             {this.getOtherFields(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit)}
             {this.getTotals(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit)}
             {this.renderCurtainEntryQuote(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit)}
+            {this.renderUpholsterEntryQuote(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit)}
             {this.renderSubmitButton(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit)}
         </Box>
 
@@ -230,6 +254,9 @@ export class CreateQuotationView extends Component {
             </Grid>
             <Grid item spacing={0}>
                 <Typography> Total sistema: ${this.state.systemTotalCost} </Typography>
+            </Grid>
+            <Grid item spacing={0}>
+                <Typography> Total espuma: ${this.state.foamTotalCost} </Typography>
             </Grid>
             <Grid item spacing={0}>
                 <Typography> Total instalacion: ${this.state.installingTotalCost} </Typography>
@@ -259,13 +286,23 @@ export class CreateQuotationView extends Component {
     }
 
     renderCurtainEntryQuote(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit) {
-        return <QuoteEntry
+        return <CurtainQuoteEntry
                 formState={{handleChange, handleBlur, errors, values, touched, setFieldValue}}
                 availableRooms={this.state.availableRooms}
                 availableProducts={this.state.availableProducts}
                 system={this.state.system}
                 sewing={this.state.sewing}
             />
+
+
+    }
+
+    renderUpholsterEntryQuote(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit) {
+        return <UpholsterQuoteEntry
+            formState={{handleChange, handleBlur, errors, values, touched, setFieldValue}}
+            availableProducts={this.state.availableProducts}
+            foam={this.state.foam}
+        />
 
 
     }

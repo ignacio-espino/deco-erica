@@ -1,23 +1,19 @@
 import csv
 
-from django.conf.urls import url
 from django.contrib import admin
 from django.forms import forms
 from django.shortcuts import render, redirect
+from django.urls import path
 
+from core.managment.commands.import_csv import import_csv_data
 from core.models.curtain_quote_entry import CurtainQuoteEntry
 from core.models.curtain_system import CurtainSystem
 from core.models.customer import Customer
 from core.models.fabric import Fabric
 from core.models.foam import Foam
 from core.models.quote import Quote
-from core.models.quote_entry import QuoteEntry
 from core.models.sewing_method import SewingMethod
 from core.models.upholster_quote_entry import UpholsterQuoteEntry
-
-from django.urls import reverse, path
-from django.http import HttpResponseRedirect
-from core.managment.commands.import_csv import import_csv_data
 
 
 class CsvImportForm(forms.Form):
@@ -85,8 +81,13 @@ class CurtainQuoteEntryInline(admin.TabularInline):
     extra = 1
 
 
+class UpholsterQuoteEntryInline(admin.TabularInline):
+    model = UpholsterQuoteEntry
+    extra = 1
+
+
 class QuoteAdmin(admin.ModelAdmin):
-    inlines = [CurtainQuoteEntryInline]
+    inlines = [CurtainQuoteEntryInline, UpholsterQuoteEntryInline]
     readonly_fields = ('fecha',)
 
     def fecha(self, obj):

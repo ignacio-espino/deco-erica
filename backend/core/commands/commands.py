@@ -12,10 +12,12 @@ from core.models.curtain_quote_entry import CurtainQuoteEntry
 from core.models.curtain_system import CurtainSystem
 from core.models.customer import Customer
 from core.models.fabric import Fabric
+from core.models.foam import Foam
 from core.models.models import Task
 from core.models.quote import Quote
 from core.models.quote_entry import QuoteEntry
 from core.models.sewing_method import SewingMethod
+from core.models.upholster_quote_entry import UpholsterQuoteEntry
 
 
 class ByPassCommand(Command):
@@ -160,12 +162,14 @@ class GetRoomsCommand(Command):
         systems_data = self._curtain_systems()
         sewing_methods = self._sewing_methods()
         fabrics = self._fabrics()
+        foams = self._foams()
         data = {
             'rooms': rooms,
             'quote_number': quote_number,
             'systems': systems_data,
             'sewing_methods': sewing_methods,
-            'fabrics': fabrics
+            'fabrics': fabrics,
+            'foams': foams
         }
         result.set_object(data)
 
@@ -196,6 +200,13 @@ class GetRoomsCommand(Command):
         for fabric in fabrics:
             fabric_data.append((fabric.code(), fabric.name()))
         return fabric_data
+
+    def _foams(self):
+        foams = Foam.objects.all()
+        foams_data = []
+        for foam in foams:
+            foams_data.append(foam.type())
+        return foams_data
 
 
 class CreateTaskCommand(Command):
@@ -229,13 +240,19 @@ class CreateQuotationCommand(Command):
                                      address=self._data['address'],
                                      email=self._data['email'])
         customer.save()
+        print('++++++++++++++')
+        print(self._data)
+        print('++++++++++++++')
         entries = self._data['remainingEntries']
+        upholster_entries = self._data['remainingUpholsterEntries']
         requires_installation = False
         for entry in entries:
             if entry['requiresInstallation']:
                 requires_installation = entry['requiresInstallation']
         quote = Quote.new_from(customer=customer, data=self._data, requires_installation=requires_installation)
+        print('creo quote')
         quote.save()
+        print('guardo quote')
         for entry in entries:
             system = CurtainSystem.objects.filter(_name=entry['system']).first()
             sewing = SewingMethod.objects.filter(_name=entry['sewing']).first()
@@ -260,6 +277,24 @@ class CreateQuotationCommand(Command):
                 system_cost=entry['systemPrice'],
                 installation_cost=entry['installationCost'],
                 installation=entry['requiresInstallation'])
+        for entry in upholster_entries:
+            fabric = Fabric.objects.filter(_code=entry['product'][0]).first()
+            foam = Foam.objects.filter(_type=entry['foam']).first()
+            print('888888888888888888888888888888888888888888888888888')
+            print(entry)
+            print('888888888888888888888888888888888888888888888888888')
+            UpholsterQuoteEntry.new_with(
+                quote=quote,
+                product_quantity=entry['upholsterQuantity'],
+                fabric=fabric,
+                total_cost=entry['upholsterTotal'],
+                sewing=entry['upholsterSewing'],
+                fabric_cost=entry['upholsterTaylorPrice'],
+                sewing_cost=entry['upholsterSewingPrice'],
+                foam=foam,
+                foam_cost=entry['foamPrice']
+            )
+
         result.set_object({})
 
 
@@ -278,8 +313,10 @@ class CalculatorCommand(Command):
         system_total_cost = 0
         installing_total_cost = 0
         subtotal_total_cost = 0
+        foam_total_cost = 0
         total_cost = 0
         amount_of_entries = len(self._data['entries'])
+        upholster_entries = len(self._data['upholsterEntries'])
         for index in range(amount_of_entries):
             entry = self._data['entries'][index]
             data_entry = entry
@@ -295,9 +332,17 @@ class CalculatorCommand(Command):
             system_total_cost += data_entry['systemPrice']
             installing_total_cost += data_entry['installationCost']
             subtotal_total_cost += data_entry['subtotal']
-            total_cost += data_entry['installationCost']
+            total_cost += data_entry['curtainTotal']
 
             new_data.append({f'{index}': data_entry})
+
+        for index in range(upholster_entries):
+            entry = self._data['upholsterEntries'][index]
+            data_entry = entry
+            fabric_total_cost += data_entry['upholsterTaylorPrice']
+            sewing_total_cost += data_entry['upholsterSewingPrice']
+            total_cost += data_entry['upholsterTotal']
+            foam_total_cost += data_entry['foamPrice']
 
         totals = {
             "fabricTotalCost": fabric_total_cost,
@@ -306,6 +351,7 @@ class CalculatorCommand(Command):
             "installingTotalCost": installing_total_cost,
             "subtotalTotalCost": subtotal_total_cost,
             "totalCost": total_cost,
+            "foamTotalCost": foam_total_cost,
         }
         new_data.append({"totals": totals})
         result.set_object(new_data)

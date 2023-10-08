@@ -5,7 +5,7 @@ from django.db import models
 
 
 class Quote(models.Model):
-    _number = models.IntegerField('Número', unique=True, blank=True, null=True)
+    _number = models.IntegerField('Número', blank=True, null=True)
     _customer = models.ForeignKey('Customer', on_delete=models.CASCADE, blank=True, null=True,
                                   related_name='customer', verbose_name='Cliente')
     _seller = models.CharField('Vendedor', max_length=80, null=True, blank=True)

@@ -69,6 +69,7 @@ class CreateQuotationEndpoint(Endpoint, LoggedInRequiredMixin):
             'deliveryDate': post_data['deliveryDate'],
             'discount': post_data['discount'],
             'remainingEntries': post_data['remainingEntries'],
+            'remainingUpholsterEntries': post_data['remainingUpholsterEntries'],
         }
         print(data)
         return commands.CreateQuotationCommand(data)
@@ -78,5 +79,6 @@ class CalculatorEndpoint(Endpoint, LoggedInRequiredMixin):
     def _post_command(self, post_data) -> Command:
         data = {
             'entries': post_data['entries'],
+            'upholsterEntries': post_data['upholsterEntries'],
         }
         return commands.CalculatorCommand(data)

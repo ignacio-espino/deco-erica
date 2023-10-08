@@ -34,7 +34,7 @@ class QuoteEntry(models.Model):
     _installation_cost = models.DecimalField('Costo de instalación', max_digits=10, decimal_places=2, blank=True, null=True)
     _total_cost = models.DecimalField('Costo total', max_digits=10, decimal_places=2, blank=True, null=True)
     _fabric_cost = models.DecimalField('Costo por tela', max_digits=10, decimal_places=2, blank=True, null=True)
-    _subtotal = models.DecimalField('Subtotal', max_digits=10, decimal_places=2)
+    _subtotal = models.DecimalField('Subtotal', blank=True, null=True, max_digits=10, decimal_places=2)
     _fabric = models.ForeignKey(Fabric, on_delete=models.CASCADE, blank=True, null=True,
                                 related_name='quote_entry', verbose_name='Tela')
 
