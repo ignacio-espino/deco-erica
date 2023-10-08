@@ -20,7 +20,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import Delete from "@mui/icons-material/Delete";
 
 
-export default class QuoteEntry extends Component {
+export default class CurtainQuoteEntry extends Component {
 
     constructor(props) {
         super(props);
@@ -65,7 +65,7 @@ export default class QuoteEntry extends Component {
             <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
                 <Grid container justifyContent="space-between">
                     <Grid item>
-                        <Typography> {this.xRemainingEntries().length === 0 ? 'Añadir una entrada' : 'Añadir otra entrada'} </Typography>
+                        <Typography> {this.xRemainingEntries().length === 0 ? 'Añadir una entrada de cortinería' : 'Añadir otra entrada de cortinería'} </Typography>
                     </Grid>
                     <Grid item><AddCircleOutlinedIcon color="primary"/></Grid>
                 </Grid>
@@ -86,7 +86,7 @@ export default class QuoteEntry extends Component {
             <AccordionSummary title="Colapsar sección" expandIcon={<ExpandMoreIcon/>}>
                 <PersonIcon/>
                 <Box sx={{ mx: 3 }}>
-                    <Typography color="textPrimary" variant="h5" fontWeight="bold"> Entrada {entryIndex + 1} </Typography>
+                    <Typography color="textPrimary" variant="h5" fontWeight="bold"> Entrada de cortinería {entryIndex + 1} </Typography>
                 </Box>
             </AccordionSummary>
             <AccordionDetails>
