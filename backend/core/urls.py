@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path
 
 from core.endpoints import endpoints
+from . import views
 
 urlpatterns = [
     path('login/', endpoints.LoginEndpoint.as_view(), name='login'),
@@ -13,6 +14,7 @@ urlpatterns = [
     path('create-task/', endpoints.CreateTaskEndpoint.as_view(), name='create-task'),
     path('create-quotation/', endpoints.CreateQuotationEndpoint.as_view(), name='create-quotation'),
     path('calculate-money-values/', endpoints.CalculatorEndpoint.as_view(), name='calculate-money-values'),
+    path('crear_venta/<int:cotizacion_id>/', views.crear_venta_desde_cotizacion, name='crear_venta_desde_cotizacion'),
 ]
 
 

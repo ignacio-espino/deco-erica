@@ -12,12 +12,14 @@ from core.models.customer import Customer
 from core.models.fabric import Fabric
 from core.models.foam import Foam
 from core.models.quote import Quote
+from core.models.sale import Sale
 from core.models.sewing_method import SewingMethod
 from core.models.upholster_quote_entry import UpholsterQuoteEntry
 
 
 class CsvImportForm(forms.Form):
     csv_file = forms.FileField()
+
 
 class FabricAdmin(admin.ModelAdmin):
     list_display = ('code', '__str__', 'price')
@@ -43,26 +45,6 @@ class FabricAdmin(admin.ModelAdmin):
             request, "admin/csv_form.html", payload
         )
 
-    # def import_csv_view(self, request):
-    #     print('HOLAAA')
-    #     if request.method == 'POST' and request.FILES.get('csv_file'):
-    #         csv_file = request.FILES['csv_file']
-    #         import_csv_data(csv_file)
-    #         self.message_user(request, 'Datos importados exitosamente')
-    #         return HttpResponseRedirect(reverse('admin:tu_app_tumodelo_changelist'))
-    #
-    #     context = {'opts': self.model._meta}
-    #     return render(request, 'core/admin/fabric/templates/admin/core/fabric/import_csv_button.html', context)
-    #
-    # import_csv_view.short_description = 'Cargar archivo CSV'
-    #
-    # def get_urls(self):
-    #     urls = super().get_urls()
-    #     my_urls = [
-    #         path('import-csv/', self.import_csv_view),
-    #     ]
-    #     return my_urls + urls
-
 
 class CurtainSystemAdmin(admin.ModelAdmin):
     pass
@@ -73,6 +55,10 @@ class CustomerAdmin(admin.ModelAdmin):
 
 
 class FoamAdmin(admin.ModelAdmin):
+    pass
+
+
+class SaleAdmin(admin.ModelAdmin):
     pass
 
 
@@ -89,6 +75,19 @@ class UpholsterQuoteEntryInline(admin.TabularInline):
 class QuoteAdmin(admin.ModelAdmin):
     inlines = [CurtainQuoteEntryInline, UpholsterQuoteEntryInline]
     readonly_fields = ('fecha',)
+
+    actions = ['crear_venta']
+
+    def crear_venta(self, request, queryset):
+        for cotizacion in queryset:
+
+            import urllib.request
+            urll = f"/crear_venta/{cotizacion.id}/"
+            req = urllib.request.Request(urll, method='POST')
+            with urllib.request.urlopen(req):
+                pass  # Procesa la respuesta si es necesario
+
+    crear_venta.short_description = "Convertir en Venta"
 
     def fecha(self, obj):
         return obj.date().strftime('%d-%m-%Y')
@@ -114,3 +113,4 @@ admin.site.register(Quote, QuoteAdmin)
 admin.site.register(SewingMethod, SewingAdmin)
 admin.site.register(CurtainQuoteEntry, CurtainQuoteEntryAdmin)
 admin.site.register(UpholsterQuoteEntry, UpholsterQuoteEntryAdmin)
+admin.site.register(Sale, SaleAdmin)
