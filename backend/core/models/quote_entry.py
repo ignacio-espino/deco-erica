@@ -42,6 +42,40 @@ class QuoteEntry(models.Model):
     def new_from(cls, quote, product_quantity, room, fabric, fabric_length, fabric_height, fabric_color, subtotal, total_cost, fabric_cost):
         return cls(_quote=quote, _product_quantity=product_quantity, _room=room, _fabric=fabric, _fabric_length=fabric_length, _fabric_height=fabric_height, _fabric_color=fabric_color, _total_cost=total_cost, _fabric_cost=fabric_cost)
 
+    def quote(self):
+        return self._quote
+
+    def product_quantity(self):
+        return self._product_quantity
+
+    def fabric_length(self):
+        return self._fabric_length
+
+    def fabric_height(self):
+        return self._fabric_height
+
+    def fabric_color(self):
+        return self._fabric_color
+
+    def installation(self):
+        return self._installation
+
+    def installation_cost(self):
+        return self._installation_cost
+
+    def total_cost(self):
+        return self._total_cost
+
+    def fabric_cost(self):
+        return self._fabric_cost
+
+    def subtotal(self):
+        return self._subtotal
+
+    def fabric(self):
+        return self._fabric
+
+
     class Meta:
         verbose_name = 'Entrada de cotización'
         verbose_name_plural = 'Entradas de cotizaciones'
