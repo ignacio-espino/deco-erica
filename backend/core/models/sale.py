@@ -4,7 +4,7 @@ from django.db import models
 class Sale(models.Model):
     _number = models.IntegerField('Número', blank=True, null=True)
     _quote = models.OneToOneField('Quote', on_delete=models.CASCADE, blank=True, null=True, related_name='sale',
-                                  verbose_name='Venta')
+                                  verbose_name='Cotización')
 
     def __str__(self):
         return f'Venta {self.number()}'
