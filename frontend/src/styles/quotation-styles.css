@@ -1,0 +1,43 @@
+.quotation {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center; /* Centra el título */
+}
+
+.header {
+    margin-bottom: 20px;
+    text-align: left; /* Alinea a la derecha */
+}
+
+.item-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.totals {
+    margin-top: 20px;
+    text-align: right; /* Alinea a la derecha */
+}
+
+p {
+    margin-bottom: 8px;
+}
+
+.footer p {
+    font-size: 10px;
+}

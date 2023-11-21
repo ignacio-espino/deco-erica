@@ -7,6 +7,8 @@ import * as Yup from "yup";
 import {Field, Formik} from "formik";
 import CurtainQuoteEntry from "./curtainQuoteEntry";
 import UpholsterQuoteEntry from "./upholsterQuoteEntry";
+import {QuotationPDF} from "./quotationPDF";
+import ReactToPrint from "react-to-print";
 
 export class CreateQuotationView extends Component {
     constructor(props) {
@@ -240,6 +242,7 @@ export class CreateQuotationView extends Component {
             {this.renderCurtainEntryQuote(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit)}
             {this.renderUpholsterEntryQuote(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit)}
             {this.renderSubmitButton(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit)}
+            {this.renderQuotationPDF(values)}
         </Box>
 
     }
@@ -259,7 +262,7 @@ export class CreateQuotationView extends Component {
                 <Typography> Total espuma: ${this.state.foamTotalCost} </Typography>
             </Grid>
             <Grid item spacing={0}>
-                <Typography> Total instalacion: ${this.state.installingTotalCost} </Typography>
+                <Typography> Total instalación: ${this.state.installingTotalCost} </Typography>
             </Grid>
             <Grid item spacing={0}>
                 <Typography> Total subtotal: ${this.state.subtotalTotalCost} </Typography>
@@ -268,6 +271,28 @@ export class CreateQuotationView extends Component {
                 <Typography> Total: ${this.state.totalCost} </Typography>
             </Grid>
         </Grid>;
+    }
+
+    renderQuotationPDF(values){
+        return(<div style={{display: 'none'}}>
+            <QuotationPDF ref={el => (this.componentRef = el)}
+                          val={values}
+                          totalCost={this.state.totalCost}
+                          subtotalTotal={this.state.subtotalTotalCost}/>
+        </div>)
+    }
+
+    getPDFButton() {
+        return (
+            <>
+                <ReactToPrint
+                    trigger={() => {
+                        return <Button>Generar PDF</Button>;
+                    }}
+                    content={() => this.componentRef}
+                />
+            </>
+        );
     }
 
     renderSubmitButton(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit) {
@@ -281,6 +306,7 @@ export class CreateQuotationView extends Component {
                     this.setState({submitAction: 'secondary'});
                     handleSubmit()
                 }}>Calcular</Button>
+                {this.getPDFButton()}
             </Grid>
         </Grid>;
     }
