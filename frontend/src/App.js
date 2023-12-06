@@ -239,7 +239,7 @@ class App extends Component {
                     <Route path={this.app.URLS.logout} render={this.logoutViewComponent}/>
                     <Route path={this.app.URLS.createTask} render={this.createTaskViewComponent}/>
                     <Route path={this.app.URLS.createQuotation} render={this.createQuotationViewComponent}/>
-                    <Route path={this.app.URLS.home} render={this.TasksViewComponent}/>
+                    <Route path={this.app.URLS.home} render={this.createQuotationViewComponent}/>
                 </Switch>
             </Router>
         );
