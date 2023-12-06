@@ -23,7 +23,6 @@ export class NavigationBar extends Component {
                         </Nav.Link>
                         <NavDropdown title="Admin" id="navbar-edit-menu">
                             <NavDropdown.Item href={this.app.URLS.admin}>BackOffice</NavDropdown.Item>
-                            <NavDropdown.Item href={this.app.URLS.createTask}>Nueva Tarea</NavDropdown.Item>
                             <NavDropdown.Item href={this.app.URLS.createQuotation}>Nueva Cotización</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
