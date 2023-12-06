@@ -1,5 +1,5 @@
 # Local stage
-FROM node:10.16.0 as build
+FROM node:14.16.1 as build
 
 WORKDIR /app
 COPY ./package.json ./yarn.lock /app/
