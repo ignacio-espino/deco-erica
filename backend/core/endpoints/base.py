@@ -13,7 +13,7 @@ from core.paginators.base import Paginator, ByPassPaginator
 from core.presenters.base import Presenter
 
 
-class LoggedInRequiredMixin:
+class LoginRequiredMixin:
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 

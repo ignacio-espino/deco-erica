@@ -2,11 +2,11 @@ import urllib
 
 from core.commands.base import Command
 from core.commands import commands
-from core.endpoints.base import Endpoint, LoggedInRequiredMixin
+from core.endpoints.base import Endpoint, LoginRequiredMixin
 from core.paginators.base import Paginator, CollectionPaginator, ByPassPaginator
 
 
-class LoginEndpoint(Endpoint):
+class LoginEndpoint(Endpoint, LoginRequiredMixin):
     def _post_command(self, post_data) -> Command:
         username = post_data['username']
         password = post_data['password']
@@ -15,20 +15,20 @@ class LoginEndpoint(Endpoint):
         return commands.ChainCommands(commands=chained_commands, initial_args=(username, password))
 
 
-class LogoutEndpoint(Endpoint, LoggedInRequiredMixin):
+class LogoutEndpoint(Endpoint):
     def _post_command(self, post_data) -> Command:
         user_id = post_data['user_id']
         chain_commands = [commands.GetUserCommand, commands.LogoutCommand]
         return commands.ChainCommands(commands=chain_commands, initial_args=user_id)
 
 
-class GetTaskEndpoint(Endpoint, LoggedInRequiredMixin):
+class GetTaskEndpoint(Endpoint):
     def _get_command(self, request_data) -> Command:
         task_id = request_data.get('task_id', '')
         return commands.GetTaskCommand(task_id=task_id)
 
 
-class GetTasksEndpoint(Endpoint, LoggedInRequiredMixin):
+class GetTasksEndpoint(Endpoint):
     def _get_command(self, request_data) -> Command:
         encoded_uri = request_data.get('query', '')
         query = urllib.parse.unquote(encoded_uri)
@@ -44,19 +44,19 @@ class GetTasksEndpoint(Endpoint, LoggedInRequiredMixin):
         return paginator
 
 
-class GetRoomsEndpoint(Endpoint, LoggedInRequiredMixin):
+class GetRoomsEndpoint(Endpoint):
     def _get_command(self, request_data) -> Command:
         return commands.GetRoomsCommand()
 
 
-class CreateTaskEndpoint(Endpoint, LoggedInRequiredMixin):
+class CreateTaskEndpoint(Endpoint):
     def _post_command(self, post_data) -> Command:
         name = post_data['name']
         description = post_data['description']
         return commands.CreateTaskCommand(name=name, description=description)
 
 
-class CreateQuotationEndpoint(Endpoint, LoggedInRequiredMixin):
+class CreateQuotationEndpoint(Endpoint):
     def _post_command(self, post_data) -> Command:
         data = {
             'number': post_data['number'],
@@ -75,7 +75,7 @@ class CreateQuotationEndpoint(Endpoint, LoggedInRequiredMixin):
         return commands.CreateQuotationCommand(data)
 
 
-class CalculatorEndpoint(Endpoint, LoggedInRequiredMixin):
+class CalculatorEndpoint(Endpoint):
     def _post_command(self, post_data) -> Command:
         data = {
             'entries': post_data['entries'],
