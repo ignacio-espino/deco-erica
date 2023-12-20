@@ -13,15 +13,17 @@ from core.paginators.base import Paginator, ByPassPaginator
 from core.presenters.base import Presenter
 
 
-class LoginRequiredMixin:
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+class PublicEndpointMixin:
+    authentication_classes = []
+    permission_classes = []
 
 
 class Endpoint(APIView):
     """
     Todo: only GET and POST are defined. PUT, PATCH, etc are not implemented, do it if you need to
     """
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         result = self._get_command(request_data=request.GET).execute()

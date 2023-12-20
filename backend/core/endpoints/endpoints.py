@@ -2,11 +2,11 @@ import urllib
 
 from core.commands.base import Command
 from core.commands import commands
-from core.endpoints.base import Endpoint, LoginRequiredMixin
+from core.endpoints.base import Endpoint, PublicEndpointMixin
 from core.paginators.base import Paginator, CollectionPaginator, ByPassPaginator
 
 
-class LoginEndpoint(Endpoint, LoginRequiredMixin):
+class LoginEndpoint(Endpoint, PublicEndpointMixin):
     def _post_command(self, post_data) -> Command:
         username = post_data['username']
         password = post_data['password']
