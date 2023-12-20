@@ -6,7 +6,10 @@ from core.endpoints.base import Endpoint, PublicEndpointMixin
 from core.paginators.base import Paginator, CollectionPaginator, ByPassPaginator
 
 
-class LoginEndpoint(Endpoint, PublicEndpointMixin):
+class LoginEndpoint(Endpoint):
+    authentication_classes = []
+    permission_classes = []
+
     def _post_command(self, post_data) -> Command:
         username = post_data['username']
         password = post_data['password']
