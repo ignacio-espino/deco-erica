@@ -2,7 +2,7 @@ import urllib
 
 from core.commands.base import Command
 from core.commands import commands
-from core.endpoints.base import Endpoint, PublicEndpointMixin
+from core.endpoints.base import Endpoint
 from core.paginators.base import Paginator, CollectionPaginator, ByPassPaginator
 
 
