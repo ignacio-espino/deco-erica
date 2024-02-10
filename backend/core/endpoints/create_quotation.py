@@ -1,5 +1,6 @@
 import core.commands
 from core.commands.base import Command
+from core.commands.create_quotation import CreateQuotationCommand
 from core.endpoints.base import Endpoint
 
 
@@ -19,4 +20,4 @@ class CreateQuotationEndpoint(Endpoint):
             'remainingUpholsterEntries': post_data['remainingUpholsterEntries'],
         }
         print(data)
-        return core.commands.create_quotation.CreateQuotationCommand(data)
+        return CreateQuotationCommand(data)
