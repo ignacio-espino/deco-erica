@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 
+import core.endpoints.calculator
 from core.endpoints import endpoints
 from . import views
 
@@ -13,7 +14,7 @@ urlpatterns = [
     path('rooms/', endpoints.GetRoomsEndpoint.as_view(), name='rooms'),
     path('create-task/', endpoints.CreateTaskEndpoint.as_view(), name='create-task'),
     path('create-quotation/', endpoints.CreateQuotationEndpoint.as_view(), name='create-quotation'),
-    path('calculate-money-values/', endpoints.CalculatorEndpoint.as_view(), name='calculate-money-values'),
+    path('calculate-money-values/', core.endpoints.calculator.CalculatorEndpoint.as_view(), name='calculate-money-values'),
     path('crear_venta/<int:cotizacion_id>/', views.crear_venta_desde_cotizacion, name='crear_venta_desde_cotizacion'),
 ]
 

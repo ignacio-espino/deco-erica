@@ -80,11 +80,3 @@ class CreateQuotationEndpoint(Endpoint):
         print(data)
         return core.commands.create_quotation.CreateQuotationCommand(data)
 
-
-class CalculatorEndpoint(Endpoint):
-    def _post_command(self, post_data) -> Command:
-        data = {
-            'entries': post_data['entries'],
-            'upholsterEntries': post_data['upholsterEntries'],
-        }
-        return core.commands.calculator.CalculatorCommand(data)
