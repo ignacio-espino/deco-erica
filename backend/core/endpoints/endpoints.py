@@ -1,5 +1,6 @@
 import urllib
 
+import core.commands.calculator
 from core.commands.base import Command
 from core.commands import commands
 from core.endpoints.base import Endpoint
@@ -84,4 +85,4 @@ class CalculatorEndpoint(Endpoint):
             'entries': post_data['entries'],
             'upholsterEntries': post_data['upholsterEntries'],
         }
-        return commands.CalculatorCommand(data)
+        return core.commands.calculator.CalculatorCommand(data)
