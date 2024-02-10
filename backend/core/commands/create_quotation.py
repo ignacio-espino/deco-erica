@@ -24,9 +24,6 @@ class CreateQuotationCommand(Command):
                                      address=self._data['address'],
                                      email=self._data['email'])
         customer.save()
-        print('++++++++++++++')
-        print(self._data)
-        print('++++++++++++++')
         entries = self._data['remainingEntries']
         upholster_entries = self._data['remainingUpholsterEntries']
         requires_installation = False
@@ -34,16 +31,11 @@ class CreateQuotationCommand(Command):
             if entry['requiresInstallation']:
                 requires_installation = entry['requiresInstallation']
         quote = Quote.new_from(customer=customer, data=self._data, requires_installation=requires_installation)
-        print('creo quote')
         quote.save()
-        print('guardo quote')
         for entry in entries:
             system = CurtainSystem.objects.filter(_name=entry['system']).first()
             sewing = SewingMethod.objects.filter(_name=entry['sewing']).first()
             fabric = Fabric.objects.filter(_code=entry['product'][0]).first()
-            print('--AAAAAAAAAAAAAAAAAAAAA--')
-            print(entry['room'])
-            print('--AAAAAAAAAAAAAAAAAAAAA--')
             CurtainQuoteEntry.new_curtain_quote_entry(
                 quote=quote,
                 product_quantity=entry['quantity'],
@@ -64,9 +56,6 @@ class CreateQuotationCommand(Command):
         for entry in upholster_entries:
             fabric = Fabric.objects.filter(_code=entry['product'][0]).first()
             foam = Foam.objects.filter(_type=entry['foam']).first()
-            print('888888888888888888888888888888888888888888888888888')
-            print(entry)
-            print('888888888888888888888888888888888888888888888888888')
             UpholsterQuoteEntry.new_with(
                 quote=quote,
                 product_quantity=entry['upholsterQuantity'],
