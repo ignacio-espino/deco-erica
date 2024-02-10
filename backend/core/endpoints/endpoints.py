@@ -1,6 +1,7 @@
 import urllib
 
 import core.commands.calculator
+import core.commands.create_quotation
 from core.commands.base import Command
 from core.commands import commands
 from core.endpoints.base import Endpoint
@@ -76,7 +77,7 @@ class CreateQuotationEndpoint(Endpoint):
             'remainingUpholsterEntries': post_data['remainingUpholsterEntries'],
         }
         print(data)
-        return commands.CreateQuotationCommand(data)
+        return core.commands.create_quotation.CreateQuotationCommand(data)
 
 
 class CalculatorEndpoint(Endpoint):
