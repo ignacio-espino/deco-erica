@@ -2,6 +2,7 @@ import urllib
 
 import core.commands.calculator
 import core.commands.create_quotation
+import core.commands.get_rooms
 from core.commands.base import Command
 from core.commands import commands
 from core.endpoints.base import Endpoint
@@ -51,7 +52,7 @@ class GetTasksEndpoint(Endpoint):
 
 class GetRoomsEndpoint(Endpoint):
     def _get_command(self, request_data) -> Command:
-        return commands.GetRoomsCommand()
+        return core.commands.get_rooms.GetRoomsCommand()
 
 
 class CreateTaskEndpoint(Endpoint):
