@@ -3,6 +3,7 @@ from django.urls import path
 
 import core.endpoints.calculator
 import core.endpoints.create_quotation
+import core.endpoints.get_rooms
 from core.endpoints import endpoints
 from . import views
 
@@ -12,7 +13,7 @@ urlpatterns = [
 
     path('task/', endpoints.GetTaskEndpoint.as_view(), name='task'),
     path('tasks/', endpoints.GetTasksEndpoint.as_view(), name='tasks'),
-    path('rooms/', endpoints.GetRoomsEndpoint.as_view(), name='rooms'),
+    path('rooms/', core.endpoints.get_rooms.GetRoomsEndpoint.as_view(), name='rooms'),
     path('create-task/', endpoints.CreateTaskEndpoint.as_view(), name='create-task'),
     path('create-quotation/', core.endpoints.create_quotation.CreateQuotationEndpoint.as_view(), name='create-quotation'),
     path('calculate-money-values/', core.endpoints.calculator.CalculatorEndpoint.as_view(), name='calculate-money-values'),
