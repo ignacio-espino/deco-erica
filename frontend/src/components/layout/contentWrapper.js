@@ -14,5 +14,5 @@ export class ContentWrapper extends Component {
 
 const styles = {
     paddingTop: 15,
-    maxWidth: '100%',
+    maxWidth: '70%',
 };

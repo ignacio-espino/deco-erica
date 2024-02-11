@@ -405,10 +405,7 @@ export class CreateQuotationView extends Component {
     }
 
     getQuotationSellerAndNumber(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit) {
-        return <Grid item container spacing={0} sx={{
-            justifyContent: '',
-            alignItems: '',
-        }}>
+        return <Grid item container>
             <Grid item lg={3} md={6} xs={12}>
                 <Field
                     as={TextField}
