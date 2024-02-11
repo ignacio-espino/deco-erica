@@ -78,14 +78,14 @@ export class CreateQuotationView extends Component {
         if (!this.props.userIsLoggedIn) {
             this.props.history.replace('/login');
         }else{
-            const rooms = await this.props.getRooms();
+            const porductsDetail = await this.props.getProductsDetail();
             this.setState({
-                availableRooms: rooms['rooms'],
-                number: rooms['quote_number'],
-                system: rooms['systems'],
-                sewing: rooms['sewing_methods'],
-                availableProducts: rooms['fabrics'],
-                foam: rooms['foams'],
+                availableRooms: porductsDetail['rooms'],
+                number: porductsDetail['quote_number'],
+                system: porductsDetail['systems'],
+                sewing: porductsDetail['sewing_methods'],
+                availableProducts: porductsDetail['fabrics'],
+                foam: porductsDetail['foams'],
             });
         }
     }

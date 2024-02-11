@@ -13,7 +13,8 @@ urlpatterns = [
 
     path('task/', endpoints.GetTaskEndpoint.as_view(), name='task'),
     path('tasks/', endpoints.GetTasksEndpoint.as_view(), name='tasks'),
-    path('rooms/', core.endpoints.get_products_information.GetProductsInformationEndpoint.as_view(), name='rooms'),
+    path('products-information/', core.endpoints.get_products_information.GetProductsInformationEndpoint.as_view(),
+         name='products-information'),
     path('create-task/', endpoints.CreateTaskEndpoint.as_view(), name='create-task'),
     path('create-quotation/', core.endpoints.create_quotation.CreateQuotationEndpoint.as_view(), name='create-quotation'),
     path('calculate-money-values/', core.endpoints.calculator.CalculatorEndpoint.as_view(), name='calculate-money-values'),

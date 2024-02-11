@@ -22,7 +22,7 @@ class App extends Component {
 
         this.getTask = this.getTask.bind(this);
         this.getTasks = this.getTasks.bind(this);
-        this.getRooms = this.getRooms.bind(this);
+        this.getProductsInformation = this.getProductsInformation.bind(this);
         this.createTask = this.createTask.bind(this);
         this.createQuotation = this.createQuotation.bind(this);
         this.calculateMoneyValues = this.calculateMoneyValues.bind(this);
@@ -97,9 +97,9 @@ class App extends Component {
         return response.data();
     }
 
-    async getRooms() {
+    async getProductsInformation() {
         const parameters = {};
-        const response = await this.apiConnector.get('rooms', parameters);
+        const response = await this.apiConnector.get('products-information', parameters);
         return response.data();
     }
 
@@ -206,7 +206,7 @@ class App extends Component {
                 username={this.getUsername()}
                 createTask={this.createQuotation}
                 calculateValues={this.calculateMoneyValues}
-                getRooms={this.getRooms}
+                getProductsDetail={this.getProductsInformation}
             />
         );
     }
