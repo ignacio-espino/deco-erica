@@ -9,7 +9,7 @@ from core.models.quote_entry import QuoteEntry
 from core.models.sewing_method import SewingMethod
 
 
-class GetRoomsCommand(Command):
+class GetProductsInformationCommand(Command):
     def validators(self) -> List[Validator]:
         return []
 
