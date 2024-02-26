@@ -16,9 +16,8 @@ import {
 } from "@mui/material";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import PersonIcon from "@mui/icons-material/Person";
 import Delete from "@mui/icons-material/Delete";
-
+import ReceiptLongOutlinedIcon from '@mui/icons-material/ReceiptLongOutlined';
 
 export default class CurtainQuoteEntry extends Component {
 
@@ -84,7 +83,7 @@ export default class CurtainQuoteEntry extends Component {
                 this.setState({expandedSections})
             }}>
             <AccordionSummary title="Colapsar sección" expandIcon={<ExpandMoreIcon/>}>
-                <PersonIcon/>
+                <ReceiptLongOutlinedIcon/>
                 <Box sx={{ mx: 3 }}>
                     <Typography color="textPrimary" variant="h5" fontWeight="bold"> Entrada de cortinería {entryIndex + 1} </Typography>
                 </Box>
