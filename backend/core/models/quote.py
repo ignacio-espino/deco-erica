@@ -14,6 +14,7 @@ class Quote(models.Model):
     _date = models.DateTimeField('Fecha', auto_now_add=True)
     _total_cost = models.DecimalField('Costo total', max_digits=10, decimal_places=2, blank=True, null=True)
     _observations = models.TextField('Observaciones', max_length=500, null=True, blank=True)
+    _approved = models.BooleanField('Aprobada', default=False)
 
     def __str__(self):
         return f'Cotización {self.number()} ({self.customer().name()})'
@@ -41,6 +42,9 @@ class Quote(models.Model):
 
     def observations(self):
         return self._observations
+
+    def is_approved(self):
+        return self._approved
 
     @classmethod
     def new_from(cls, customer, data, requires_installation):
