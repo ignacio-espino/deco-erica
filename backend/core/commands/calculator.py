@@ -65,7 +65,7 @@ class CalculatorCommand(Command):
             "systemTotalCost": system_total_cost,
             "installingTotalCost": installing_total_cost,
             "subtotalTotalCost": subtotal_total_cost,
-            "totalCost": total_cost,
+            "totalCost": total_cost * Decimal(1.21),
             "foamTotalCost": foam_total_cost,
         }
         new_data.append({"totals": totals})
