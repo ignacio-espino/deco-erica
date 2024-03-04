@@ -78,3 +78,10 @@ class Calculator:
         fabric = Fabric.objects.get(_code=fabric_code)
         fabric_price = fabric.price()
         return ((fabric_width * sewing_value) + Decimal(0.2)) * fabric_price
+
+    def calculate_system_price(self, entry):
+        # (Ancho x Tipo de Confeccion / 1,50) x $ de Confeccion
+        fabric_width = entry['width']
+        sewing_method_name = entry['sewing']
+        # valor de paño?
+        pass
