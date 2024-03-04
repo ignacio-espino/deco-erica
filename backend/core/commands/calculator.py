@@ -2,6 +2,7 @@ from decimal import Decimal
 from typing import List
 
 from core.commands.base import Command, Validator
+from core.models.curtain_system import CurtainSystem
 from core.models.fabric import Fabric
 from core.models.sewing_method import SewingMethod
 
@@ -29,12 +30,17 @@ class CalculatorCommand(Command):
         for index in range(amount_of_entries):
             entry = self._data['entries'][index]
             data_entry = entry
-            data_entry['systemPrice'] = entry['systemPrice'] + 777
-            data_entry['taylorPrice'] = calculator.calculate_taylor_price(entry)
-            data_entry['sewingPrice'] = entry['sewingPrice'] + 777
-            data_entry['subtotal'] = entry['subtotal'] + 777
-            data_entry['curtainTotal'] = entry['curtainTotal'] + 777
-            data_entry['installationCost'] = entry['installationCost'] + 777 if entry['installationCost'] else 0
+            system_price = calculator.calculate_system_price(entry)
+            taylor_price = calculator.calculate_taylor_price(entry)
+            sewing_price = entry['sewingPrice'] + 777
+            installation_cost = entry['installationCost'] + 777 if entry['installationCost'] else 0
+            subtotal = system_price + taylor_price + sewing_price + installation_cost
+            data_entry['systemPrice'] = system_price
+            data_entry['taylorPrice'] = taylor_price
+            data_entry['sewingPrice'] = sewing_price
+            data_entry['installationCost'] = installation_cost
+            data_entry['subtotal'] = subtotal
+            data_entry['curtainTotal'] = subtotal * data_entry['quantity']
 
             fabric_total_cost += data_entry['taylorPrice']
             sewing_total_cost += data_entry['sewingPrice']
@@ -85,3 +91,10 @@ class Calculator:
         sewing_method_name = entry['sewing']
         # valor de paño?
         pass
+
+    def calculate_system_price(self, entry):
+        # Ancho x precio de sistema
+        fabric_width = entry['width']
+        system_name = entry['system']
+        system = CurtainSystem.objects.get(_name=system_name)
+        return fabric_width * system.price()
