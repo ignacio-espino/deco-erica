@@ -1,8 +1,9 @@
+#### Deploy variables ####
 GCLOUD_USERNAME := nacho
 VM_INSTANCE_NAME := sistema-deco
 VM_ZONE := "us-central1-a"
 PROJECT_NAME := "sapient-cycling-404615"
-
+###########################
 
 .PHONY: build
 build:
