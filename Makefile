@@ -1,3 +1,9 @@
+GCLOUD_USERNAME := nacho
+VM_INSTANCE_NAME := sistema-deco
+VM_ZONE := "us-central1-a"
+PROJECT_NAME := "sapient-cycling-404615"
+
+
 .PHONY: build
 build:
 	docker compose build
@@ -50,19 +56,19 @@ logs-backend:
 
 .PHONY: up-production
 up-production:
-	gcloud compute ssh nacho@sistema-deco --zone "us-central1-a" --project "sapient-cycling-404615" -- 'cd deco-erica && sudo docker compose rm -f && sudo docker compose -f docker-compose-production.yml up -d --force-recreate'
+	gcloud compute ssh ${GCLOUD_USERNAME}@${VM_INSTANCE_NAME} --zone ${VM_ZONE} --project ${PROJECT_NAME} -- 'cd deco-erica && sudo docker compose rm -f && sudo docker compose -f docker-compose-production.yml up -d --force-recreate'
 
 .PHONY: run-migrations-production
 run-migrations-production:
-	gcloud compute ssh nacho@sistema-deco --zone "us-central1-a" --project "sapient-cycling-404615" -- 'cd deco-erica && sudo docker compose -f docker-compose-production.yml exec backend python manage.py migrate'
+	gcloud compute ssh ${GCLOUD_USERNAME}@${VM_INSTANCE_NAME} --zone ${VM_ZONE} --project ${PROJECT_NAME} -- 'cd deco-erica && sudo docker compose -f docker-compose-production.yml exec backend python manage.py migrate'
 
 .PHONY: build-production
 build-production:
-	gcloud compute ssh nacho@sistema-deco --zone "us-central1-a" --project "sapient-cycling-404615" -- 'cd deco-erica && sudo docker compose -f docker-compose-production.yml build'
+	gcloud compute ssh ${GCLOUD_USERNAME}@${VM_INSTANCE_NAME} --zone ${VM_ZONE} --project ${PROJECT_NAME} -- 'cd deco-erica && sudo docker compose -f docker-compose-production.yml build'
 
 .PHONY: git-pull-production
 git-pull-production:
-	gcloud compute ssh nacho@sistema-deco --zone "us-central1-a" --project "sapient-cycling-404615" -- 'cd deco-erica && git pull'
+	gcloud compute ssh ${GCLOUD_USERNAME}@${VM_INSTANCE_NAME} --zone ${VM_ZONE} --project ${PROJECT_NAME} -- 'cd deco-erica && git pull'
 
 .PHONY: deploy
 deploy: git-pull-production build-production up-production run-migrations-production
