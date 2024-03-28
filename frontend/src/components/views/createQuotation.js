@@ -65,6 +65,8 @@ export class CreateQuotationView extends Component {
         this.onSubmit = this.onSubmit.bind(this);
         this.calculateOnSumbit = this.calculateOnSumbit.bind(this);
         this.updateMoneyValues = this.updateMoneyValues.bind(this);
+        this.totalCostWithDiscount = this.totalCostWithDiscount.bind(this);
+        this.totalCostWithIVA = this.totalCostWithIVA.bind(this);
     }
 
 
@@ -268,11 +270,23 @@ export class CreateQuotationView extends Component {
                 <Typography> Total subtotal: ${this.state.subtotalTotalCost} </Typography>
             </Grid>
             <Grid item spacing={0}>
-                <Typography> Total: ${this.state.totalCost} </Typography>
+                <Typography> Total: ${this.totalCostWithDiscount()} (+IVA: $ {this.totalCostWithIVA()}) </Typography>
             </Grid>
         </Grid>;
     }
 
+    totalCostWithDiscount() {
+        let discount = this.state.discount;
+        let totalCost = this.state.totalCost;
+        if (discount !== 0) {
+            return totalCost * (discount / 100)
+        }
+        return totalCost
+    }
+
+    totalCostWithIVA() {
+        return this.totalCostWithDiscount() * 1.21
+    }
     renderQuotationPDF(values){
         return(<div style={{display: 'none'}}>
             <QuotationPDF ref={el => (this.componentRef = el)}
