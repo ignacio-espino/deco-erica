@@ -1,3 +1,5 @@
+import math
+
 from decimal import Decimal
 from typing import List
 
@@ -32,8 +34,8 @@ class CalculatorCommand(Command):
             data_entry = entry
             system_price = calculator.calculate_system_price(entry)
             taylor_price = calculator.calculate_taylor_price(entry)
-            sewing_price = entry['sewingPrice'] + 777
-            installation_cost = entry['installationCost'] + 777 if entry['installationCost'] else 0
+            sewing_price = calculator.calculate_sewing_method_price(entry)
+            installation_cost = calculator.calculate_installation_cost(entry)
             subtotal = system_price + taylor_price + sewing_price + installation_cost
             data_entry['systemPrice'] = system_price
             data_entry['taylorPrice'] = taylor_price
@@ -73,24 +75,31 @@ class CalculatorCommand(Command):
 
 
 class Calculator:
+    SEWING_PRICE = 4000
+    ROMANA_PRICE = 2000
+    PANEL_ORIENTAL_PRICE = 2000
+    INSTALLATION_PRICE = 2000
 
     def calculate_taylor_price(self, entry):
         # (Ancho x Tipo de confeccion +0.20cm) x $ de tela
         fabric_width = entry['width']
+        fabric_height = entry['height']
         sewing_method_name = entry['sewing']
         sewing_method = SewingMethod.objects.get(_name=sewing_method_name)
-        sewing_value = sewing_method.value()
+        sewing_value = self._get_sewing_method_value(sewing_method, fabric_width, fabric_height)
         fabric_code = entry['product'][0]
         fabric = Fabric.objects.get(_code=fabric_code)
         fabric_price = fabric.price()
         return ((fabric_width * sewing_value) + Decimal(0.2)) * fabric_price
 
-    def calculate_system_price(self, entry):
+    def calculate_sewing_method_price(self, entry):
         # (Ancho x Tipo de Confeccion / 1,50) x $ de Confeccion
         fabric_width = entry['width']
+        fabric_height = entry['height']
         sewing_method_name = entry['sewing']
-        # valor de paño?
-        pass
+        sewing_method = SewingMethod.objects.get(_name=sewing_method_name)
+        sewing_method_value = self._get_sewing_method_value(sewing_method, fabric_width, fabric_height)
+        return Decimal(math.ceil((fabric_width * sewing_method_value) / Decimal(1.5))) * self.SEWING_PRICE
 
     def calculate_system_price(self, entry):
         # Ancho x precio de sistema
@@ -98,3 +107,16 @@ class Calculator:
         system_name = entry['system']
         system = CurtainSystem.objects.get(_name=system_name)
         return fabric_width * system.price()
+
+    def calculate_installation_cost(self, entry):
+        if entry['requiresInstallation']:
+            fabric_width = entry['width']
+            return fabric_width * self.INSTALLATION_PRICE
+        return 0
+
+    def _get_sewing_method_value(self, sewing_method, fabric_width, fabric_height):
+        if sewing_method.name() == 'Romana':
+            return fabric_width * fabric_height * self.ROMANA_PRICE
+        if sewing_method.name() == 'Panel Oriental':
+            return self.PANEL_ORIENTAL_PRICE  # Unidad x PANEL ORIENTAL (que seria unidad?)
+        return sewing_method.value()
