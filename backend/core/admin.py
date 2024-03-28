@@ -59,7 +59,7 @@ class FoamAdmin(admin.ModelAdmin):
 
 
 class SaleAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('__str__', '_tracking_state', '_fabric_requested', '_systems_requested', '_order_shipped', '_delivery_date')
 
 
 class CurtainQuoteEntryInline(admin.TabularInline):
