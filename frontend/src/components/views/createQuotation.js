@@ -281,11 +281,11 @@ export class CreateQuotationView extends Component {
         if (discount !== 0) {
             return totalCost * (discount / 100)
         }
-        return totalCost
+        return Math.round(totalCost * 100) / 100
     }
 
     totalCostWithIVA() {
-        return this.totalCostWithDiscount() * 1.21
+        return Math.round(this.totalCostWithDiscount() * 1.21 * 100) / 100
     }
     renderQuotationPDF(values){
         return(<div style={{display: 'none'}}>
