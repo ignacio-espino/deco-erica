@@ -240,7 +240,7 @@ export class CreateQuotationView extends Component {
             {this.getQuotationSellerAndNumber(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit)}
             {this.getCustomerFields(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit)}
             {this.getOtherFields(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit)}
-            {this.getTotals(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit)}
+            {this.getTotals()}
             {this.renderCurtainEntryQuote(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit)}
             {this.renderUpholsterEntryQuote(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit)}
             {this.renderSubmitButton(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit)}
@@ -249,27 +249,27 @@ export class CreateQuotationView extends Component {
 
     }
 
-    getTotals(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit){
+    getTotals(){
         return <Grid container spacing={2}>
-            <Grid item spacing={0}>
+            <Grid item>
                 <Typography> Total tela: ${this.state.fabricTotalCost} </Typography>
             </Grid>
-            <Grid item spacing={0}>
+            <Grid item>
                 <Typography> Total confección: ${this.state.sewingTotalCost} </Typography>
             </Grid>
-            <Grid item spacing={0}>
+            <Grid item>
                 <Typography> Total sistema: ${this.state.systemTotalCost} </Typography>
             </Grid>
-            <Grid item spacing={0}>
+            <Grid item>
                 <Typography> Total espuma: ${this.state.foamTotalCost} </Typography>
             </Grid>
-            <Grid item spacing={0}>
+            <Grid item>
                 <Typography> Total instalación: ${this.state.installingTotalCost} </Typography>
             </Grid>
-            <Grid item spacing={0}>
+            <Grid item>
                 <Typography> Total subtotal: ${this.state.subtotalTotalCost} </Typography>
             </Grid>
-            <Grid item spacing={0}>
+            <Grid item>
                 <Typography> Total: ${this.totalCostWithDiscount()} (+IVA: $ {this.totalCostWithIVA()}) </Typography>
             </Grid>
         </Grid>;
@@ -310,19 +310,27 @@ export class CreateQuotationView extends Component {
     }
 
     renderSubmitButton(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit) {
-        return <Grid container spacing={2}>
-            <Grid item container spacing={0}>
-                <Button type={'submit'} onClick={() => {
-                    this.setState({submitAction: 'primary'});
-                    handleSubmit()
-                }}>Crear cotización</Button>
-                <Button onClick={() => {
-                    this.setState({submitAction: 'secondary'});
-                    handleSubmit()
-                }}>Calcular</Button>
+        return <Grid container>
+            <Grid item container>
+                {this.getCreateQuotationButton(handleSubmit)}
+                {this.getCalculateValuesButton(handleSubmit)}
                 {this.getPDFButton()}
             </Grid>
         </Grid>;
+    }
+
+    getCalculateValuesButton(handleSubmit) {
+        return <Button onClick={() => {
+            this.setState({submitAction: 'secondary'});
+            handleSubmit()
+        }}>Calcular</Button>;
+    }
+
+    getCreateQuotationButton(handleSubmit) {
+        return <Button type={'submit'} onClick={() => {
+            this.setState({submitAction: 'primary'});
+            handleSubmit()
+        }}>Crear cotización</Button>;
     }
 
     renderCurtainEntryQuote(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit) {
@@ -348,11 +356,8 @@ export class CreateQuotationView extends Component {
     }
 
     getCustomerFields(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit) {
-        return <Grid container spacing={0}>
-            <Grid item container spacing={0} sx={{
-                justifyContent: '',
-                alignItems: '',
-            }}>
+        return <Grid container>
+            <Grid item container>
                 <Grid item lg={3} md={6} xs={12}>
                     <Field
                         as={TextField}
@@ -398,11 +403,8 @@ export class CreateQuotationView extends Component {
     }
 
     getOtherFields(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit) {
-        return <Grid container spacing={0}>
-            <Grid item container spacing={0} sx={{
-                justifyContent: '',
-                alignItems: '',
-            }}>
+        return <Grid container>
+            <Grid item container>
                 <Grid item lg={3} md={6} xs={12}>
                     <Field
                         as={TextField}
@@ -419,7 +421,7 @@ export class CreateQuotationView extends Component {
     }
 
     getQuotationSellerAndNumber(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit) {
-        return <Grid item container>
+        return <Grid container>
             <Grid item lg={3} md={6} xs={12}>
                 <Field
                     as={TextField}
