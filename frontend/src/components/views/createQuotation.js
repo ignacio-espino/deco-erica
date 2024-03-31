@@ -236,7 +236,7 @@ export class CreateQuotationView extends Component {
     }
 
     renderFields(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit) {
-        return <Box>
+        return <Grid container>
             {this.getQuotationSellerAndNumber(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit)}
             {this.getCustomerFields(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit)}
             {this.getOtherFields(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit)}
@@ -245,12 +245,12 @@ export class CreateQuotationView extends Component {
             {this.renderUpholsterEntryQuote(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit)}
             {this.renderSubmitButton(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit)}
             {this.renderQuotationPDF(values)}
-        </Box>
+        </Grid>
 
     }
 
     getTotals(){
-        return <Grid container spacing={2}>
+        return <Grid item container spacing={2} sx={{marginBottom: "1.5em"}}>
             <Grid item>
                 <Typography> Total tela: ${this.state.fabricTotalCost} </Typography>
             </Grid>
@@ -298,65 +298,71 @@ export class CreateQuotationView extends Component {
 
     getPDFButton() {
         return (
-            <>
+            <Grid item>
                 <ReactToPrint
                     trigger={() => {
                         return <Button>Generar PDF</Button>;
                     }}
                     content={() => this.componentRef}
                 />
-            </>
+            </Grid>
         );
     }
 
     renderSubmitButton(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit) {
-        return <Grid container>
-            <Grid item container>
+        return <Grid item container spacing={2}>
                 {this.getCreateQuotationButton(handleSubmit)}
                 {this.getCalculateValuesButton(handleSubmit)}
                 {this.getPDFButton()}
             </Grid>
-        </Grid>;
     }
 
     getCalculateValuesButton(handleSubmit) {
-        return <Button onClick={() => {
-            this.setState({submitAction: 'secondary'});
-            handleSubmit()
-        }}>Calcular</Button>;
+        return <Grid item>
+            <Button onClick={() => {
+                this.setState({submitAction: 'secondary'});
+                handleSubmit()
+            }}>Calcular</Button>
+            </Grid>
     }
 
     getCreateQuotationButton(handleSubmit) {
-        return <Button type={'submit'} onClick={() => {
-            this.setState({submitAction: 'primary'});
-            handleSubmit()
-        }}>Crear cotización</Button>;
+        return <Grid item>
+            <Button type={'submit'} onClick={() => {
+                this.setState({submitAction: 'primary'});
+                handleSubmit()
+            }}>Crear cotización</Button>
+        </Grid>
     }
 
     renderCurtainEntryQuote(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit) {
-        return <CurtainQuoteEntry
-                formState={{handleChange, handleBlur, errors, values, touched, setFieldValue}}
-                availableRooms={this.state.availableRooms}
-                availableProducts={this.state.availableProducts}
-                system={this.state.system}
-                sewing={this.state.sewing}
+        return <Grid item sx={{marginBottom: "1.5em", width: "100%"}}>
+            <CurtainQuoteEntry
+                    formState={{handleChange, handleBlur, errors, values, touched, setFieldValue}}
+                    availableRooms={this.state.availableRooms}
+                    availableProducts={this.state.availableProducts}
+                    system={this.state.system}
+                    sewing={this.state.sewing}
             />
+        </Grid>
 
 
     }
 
     renderUpholsterEntryQuote(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit) {
-        return <UpholsterQuoteEntry
-            formState={{handleChange, handleBlur, errors, values, touched, setFieldValue}}
-            availableProducts={this.state.availableProducts}
-            foam={this.state.foam}
-        />
+        return <Grid item sx={{marginBottom: "1.5em", width: "100%"}}>
+            <UpholsterQuoteEntry
+                formState={{handleChange, handleBlur, errors, values, touched, setFieldValue}}
+                availableProducts={this.state.availableProducts}
+                foam={this.state.foam}
+            />
+        </Grid>
 
 
     }
 
     getCustomerFields(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit) {
-        return <Grid container>
+        return <Grid container item sx={{marginBottom: "1.5em"}}>
             <Grid item container>
                 <Grid item lg={3} md={6} xs={12}>
                     <Field
@@ -403,7 +409,7 @@ export class CreateQuotationView extends Component {
     }
 
     getOtherFields(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit) {
-        return <Grid container>
+        return <Grid container item sx={{marginBottom: "1.5em"}}>
             <Grid item container>
                 <Grid item lg={3} md={6} xs={12}>
                     <Field
@@ -421,7 +427,7 @@ export class CreateQuotationView extends Component {
     }
 
     getQuotationSellerAndNumber(handleChange, handleBlur, errors, values, touched, setFieldValue, handleSubmit) {
-        return <Grid container>
+        return <Grid item container sx={{marginBottom: "1.5em"}}>
             <Grid item lg={3} md={6} xs={12}>
                 <Field
                     as={TextField}

@@ -64,7 +64,7 @@ export default class CurtainQuoteEntry extends Component {
             <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
                 <Grid container justifyContent="space-between">
                     <Grid item>
-                        <Typography> {this.xRemainingEntries().length === 0 ? 'Añadir una entrada de cortinería' : 'Añadir otra entrada de cortinería'} </Typography>
+                        <Typography> {this.xRemainingEntries().length === 0 ? 'Agregar una entrada de cortinería' : 'Agregar otra entrada de cortinería'} </Typography>
                     </Grid>
                     <Grid item><AddCircleOutlinedIcon color="primary"/></Grid>
                 </Grid>

@@ -35,10 +35,10 @@ export default class UpholsterQuoteEntry extends Component {
 
     render() {
         return <FieldArray name="remainingUpholsterEntries">
-            {(fieldArray) => {
-                return this.renderList(fieldArray)
-            }}
-        </FieldArray>
+                {(fieldArray) => {
+                    return this.renderList(fieldArray)
+                }}
+            </FieldArray>
     }
 
     renderList(fieldArray) {
@@ -64,7 +64,7 @@ export default class UpholsterQuoteEntry extends Component {
             <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
                 <Grid container justifyContent="space-between">
                     <Grid item>
-                        <Typography> {this.xRemainingUpholsterEntries().length === 0 ? 'Añadir una entrada de tapicería' : 'Añadir otra entrada de tapicería'} </Typography>
+                        <Typography> {this.xRemainingUpholsterEntries().length === 0 ? 'Agregar una entrada de tapicería' : 'Agregar otra entrada de tapicería'} </Typography>
                     </Grid>
                     <Grid item><AddCircleOutlinedIcon color="primary"/></Grid>
                 </Grid>
