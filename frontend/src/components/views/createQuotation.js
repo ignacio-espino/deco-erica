@@ -252,25 +252,25 @@ export class CreateQuotationView extends Component {
     getTotals(){
         return <Grid item container spacing={2} sx={{marginBottom: "1.5em"}}>
             <Grid item>
-                <Typography> Total tela: ${this.state.fabricTotalCost} </Typography>
+                <Typography sx={{fontSize: 'large', fontWeight: "600"}}> Tela: ${this.state.fabricTotalCost} </Typography>
             </Grid>
             <Grid item>
-                <Typography> Total confección: ${this.state.sewingTotalCost} </Typography>
+                <Typography sx={{fontSize: 'large', fontWeight: "600"}}> Confección: ${this.state.sewingTotalCost} </Typography>
             </Grid>
             <Grid item>
-                <Typography> Total sistema: ${this.state.systemTotalCost} </Typography>
+                <Typography sx={{fontSize: 'large', fontWeight: "600"}}> Sistema: ${this.state.systemTotalCost} </Typography>
             </Grid>
             <Grid item>
-                <Typography> Total espuma: ${this.state.foamTotalCost} </Typography>
+                <Typography sx={{fontSize: 'large', fontWeight: "600"}}> Espuma: ${this.state.foamTotalCost} </Typography>
             </Grid>
             <Grid item>
-                <Typography> Total instalación: ${this.state.installingTotalCost} </Typography>
+                <Typography sx={{fontSize: 'large', fontWeight: "600"}}> Instalación: ${this.state.installingTotalCost} </Typography>
             </Grid>
             <Grid item>
-                <Typography> Total subtotal: ${this.state.subtotalTotalCost} </Typography>
+                <Typography sx={{fontSize: 'large', fontWeight: "600"}}> Subtotal: ${this.state.subtotalTotalCost} </Typography>
             </Grid>
             <Grid item>
-                <Typography> Total: ${this.totalCostWithDiscount()} (+IVA: $ {this.totalCostWithIVA()}) </Typography>
+                <Typography sx={{fontSize: 'large', fontWeight: "600"}}> Total: ${this.totalCostWithDiscount()} (+IVA: $ {this.totalCostWithIVA()}) </Typography>
             </Grid>
         </Grid>;
     }
