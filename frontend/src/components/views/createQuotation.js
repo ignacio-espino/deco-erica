@@ -97,8 +97,6 @@ export class CreateQuotationView extends Component {
     }
 
     onSubmit(values) {
-        debugger;
-        //console.log(values);
         this.props.createTask(
             values.number,
             values.seller,
@@ -328,7 +326,7 @@ export class CreateQuotationView extends Component {
 
     getCreateQuotationButton(handleSubmit) {
         return <Grid item>
-            <Button type={'submit'} onClick={() => {
+            <Button onClick={() => {
                 this.setState({submitAction: 'primary'});
                 handleSubmit()
             }}>Crear cotización</Button>
