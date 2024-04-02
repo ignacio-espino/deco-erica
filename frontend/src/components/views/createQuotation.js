@@ -162,7 +162,7 @@ export class CreateQuotationView extends Component {
     render() {
         return <MainLayout username={this.props.username}>
             <Helmet>
-                <title>Nueva cotización</title>
+                <title>Cotizador</title>
             </Helmet>
                 <Grid container sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                     <Formik
