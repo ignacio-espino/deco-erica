@@ -277,7 +277,8 @@ export class CreateQuotationView extends Component {
         let discount = this.state.discount;
         let totalCost = this.state.totalCost;
         if (discount !== 0) {
-            return totalCost * (discount / 100)
+            let discount_price = totalCost * (discount / 100)
+            return Math.round((totalCost - discount_price) * 100) / 100
         }
         return Math.round(totalCost * 100) / 100
     }
