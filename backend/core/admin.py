@@ -15,6 +15,7 @@ from core.models.quote import Quote
 from core.models.sale import Sale
 from core.models.sewing_method import SewingMethod
 from core.models.upholster_quote_entry import UpholsterQuoteEntry
+from core.models.decoerica_settings import DecoEricaSettings
 
 
 class CsvImportForm(forms.Form):
@@ -105,6 +106,10 @@ class UpholsterQuoteEntryAdmin(admin.ModelAdmin):
     pass
 
 
+class DecoEricaSettingsAdmin(admin.ModelAdmin):
+    list_display = ('__str__', '_fabric_surcharge_percentage', '_installation_price', '_sewing_price')
+
+
 admin.site.register(Fabric, FabricAdmin)
 admin.site.register(CurtainSystem, CurtainSystemAdmin)
 admin.site.register(Customer, CustomerAdmin)
@@ -114,3 +119,4 @@ admin.site.register(SewingMethod, SewingAdmin)
 admin.site.register(CurtainQuoteEntry, CurtainQuoteEntryAdmin)
 admin.site.register(UpholsterQuoteEntry, UpholsterQuoteEntryAdmin)
 admin.site.register(Sale, SaleAdmin)
+admin.site.register(DecoEricaSettings, DecoEricaSettingsAdmin)

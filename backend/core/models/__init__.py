@@ -8,3 +8,4 @@ import core.models.quote_entry
 import core.models.curtain_quote_entry
 import core.models.upholster_quote_entry
 import core.models.sale
+import core.models.decoerica_settings
