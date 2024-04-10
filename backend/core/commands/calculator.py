@@ -8,9 +8,7 @@ from core.models.curtain_system import CurtainSystem
 from core.models.fabric import Fabric
 from core.models.sewing_method import SewingMethod
 
-# Agregar 75 % arriba de la tela (fala lo tiene que cambiar)
-# Calcular el descuento
-#
+from core.models.decoerica_settings import DecoEricaSettings
 
 class CalculatorCommand(Command):
     def __init__(self, data) -> None:
@@ -78,11 +76,9 @@ class CalculatorCommand(Command):
 
 
 class Calculator:
-    SEWING_PRICE = 8000
     ROMANA_PRICE = 2000
     PANEL_ORIENTAL_PRICE = 2000
-    INSTALLATION_PRICE = 2000
-    FABRIC_SURCHARGE_PERCENTAGE = 75
+
 
     def calculate_taylor_price(self, entry):
         # (Ancho x Tipo de confeccion +0.20cm) x $ de tela
@@ -94,7 +90,7 @@ class Calculator:
         fabric_code = entry['product'][0]
         fabric = Fabric.objects.get(_code=fabric_code)
         fabric_price = fabric.price()
-        fabric_surcharge = fabric_price * (self.FABRIC_SURCHARGE_PERCENTAGE / 100)
+        fabric_surcharge = fabric_price * (self.fabric_surcharge_percentage_from_settings() / 100)
         fabric_with_surcharge_price = fabric_price + fabric_surcharge
         return ((fabric_width * sewing_value) + Decimal(0.2)) * fabric_with_surcharge_price
 
@@ -105,7 +101,7 @@ class Calculator:
         sewing_method_name = entry['sewing']
         sewing_method = SewingMethod.objects.get(_name=sewing_method_name)
         sewing_method_value = self._get_sewing_method_value(sewing_method, fabric_width, fabric_height)
-        return Decimal(math.ceil((fabric_width * sewing_method_value) / Decimal(1.5))) * self.SEWING_PRICE
+        return Decimal(math.ceil((fabric_width * sewing_method_value) / Decimal(1.5))) * self.sewing_price_from_settings()
 
     def calculate_system_price(self, entry):
         # Ancho x precio de sistema
@@ -117,7 +113,7 @@ class Calculator:
     def calculate_installation_cost(self, entry):
         if entry['requiresInstallation']:
             fabric_width = entry['width']
-            return fabric_width * self.INSTALLATION_PRICE
+            return fabric_width * self.installation_price_from_settings()
         return 0
 
     def _get_sewing_method_value(self, sewing_method, fabric_width, fabric_height):
@@ -126,3 +122,15 @@ class Calculator:
         if sewing_method.name() == 'Panel Oriental':
             return self.PANEL_ORIENTAL_PRICE  # Unidad x PANEL ORIENTAL (que seria unidad?)
         return sewing_method.value()
+
+    def sewing_price_from_settings(self):
+        return self._settings().sewing_price()
+
+    def installation_price_from_settings(self):
+        return self._settings().installation_price()
+
+    def fabric_surcharge_percentage_from_settings(self):
+        return self._settings().fabric_surcharge_percentage()
+
+    def _settings(self):
+        return DecoEricaSettings.objects.first()
