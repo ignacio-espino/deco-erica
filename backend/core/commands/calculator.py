@@ -8,6 +8,9 @@ from core.models.curtain_system import CurtainSystem
 from core.models.fabric import Fabric
 from core.models.sewing_method import SewingMethod
 
+# Agregar 75 % arriba de la tela (fala lo tiene que cambiar)
+# Calcular el descuento
+#
 
 class CalculatorCommand(Command):
     def __init__(self, data) -> None:
@@ -67,7 +70,7 @@ class CalculatorCommand(Command):
             "systemTotalCost": system_total_cost,
             "installingTotalCost": installing_total_cost,
             "subtotalTotalCost": subtotal_total_cost,
-            "totalCost": total_cost * Decimal(1.21),
+            "totalCost": total_cost,
             "foamTotalCost": foam_total_cost,
         }
         new_data.append({"totals": totals})
@@ -75,10 +78,11 @@ class CalculatorCommand(Command):
 
 
 class Calculator:
-    SEWING_PRICE = 4000
+    SEWING_PRICE = 8000
     ROMANA_PRICE = 2000
     PANEL_ORIENTAL_PRICE = 2000
     INSTALLATION_PRICE = 2000
+    FABRIC_SURCHARGE_PERCENTAGE = 75
 
     def calculate_taylor_price(self, entry):
         # (Ancho x Tipo de confeccion +0.20cm) x $ de tela
@@ -90,7 +94,9 @@ class Calculator:
         fabric_code = entry['product'][0]
         fabric = Fabric.objects.get(_code=fabric_code)
         fabric_price = fabric.price()
-        return ((fabric_width * sewing_value) + Decimal(0.2)) * fabric_price
+        fabric_surcharge = fabric_price * (self.FABRIC_SURCHARGE_PERCENTAGE / 100)
+        fabric_with_surcharge_price = fabric_price + fabric_surcharge
+        return ((fabric_width * sewing_value) + Decimal(0.2)) * fabric_with_surcharge_price
 
     def calculate_sewing_method_price(self, entry):
         # (Ancho x Tipo de Confeccion / 1,50) x $ de Confeccion
