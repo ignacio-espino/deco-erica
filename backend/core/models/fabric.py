@@ -35,7 +35,6 @@ class Fabric(models.Model):
     _name = models.CharField('Nombre', max_length=80, null=True, blank=True)
     _price = models.DecimalField('Costo de la tela', max_digits=10, decimal_places=2, blank=True, null=True)
     _category = models.CharField('Categoría', max_length=250, choices=CATEGORY_OPTIONS, null=True, blank=True)
-    _description = models.CharField('Descripción', max_length=80, null=True, blank=True)
     _description_width = models.DecimalField('Descripción ancho', max_digits=10, decimal_places=2, blank=True,
                                              null=True)
 
@@ -43,19 +42,19 @@ class Fabric(models.Model):
         return f'{self.name()}'
 
     @classmethod
-    def new_from(cls, code, name, price):
-        fabric = cls(_code=code, _name=name, _price=price)
+    def new_from(cls, code, name, price, category, description_width):
+        fabric = cls(_code=code, _name=name, _price=price, _category=category, _description_width=description_width)
         fabric.save()
         return fabric
 
     @classmethod
-    def update_price(cls, code, name, price):
+    def update_price(cls, code, name, price, category, description_width):
         fabric = cls.objects.filter(_code=int(code))
         if fabric:
             fabric._price = price
             fabric._name = name
         else:
-            fabric = cls.new_from(code, name, price)
+            fabric = cls.new_from(code, name, price, category, description_width)
         return fabric
 
     def code(self):
