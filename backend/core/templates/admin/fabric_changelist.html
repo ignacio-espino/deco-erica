@@ -1,7 +1,25 @@
 {% extends 'admin/change_list.html' %}
 
 {% block object-tools %}
-    <a href="import-csv/">Import CSV</a>
-    <br />
+    <style>
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff; 
+            text-decoration: none;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #0056b3; 
+        }
+    </style>
+    <a href="import-csv/" class="button">Importar lista de precios (CSV)</a>
+    <br/>
+    <br/>
+    <br/>
     {{ block.super }}
 {% endblock %}

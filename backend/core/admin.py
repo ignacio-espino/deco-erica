@@ -19,7 +19,7 @@ from core.models.decoerica_settings import DecoEricaSettings
 
 
 class CsvImportForm(forms.Form):
-    csv_file = forms.FileField()
+    archivo_csv = forms.FileField(label='Seleccionar archivo')
 
 
 class FabricAdmin(admin.ModelAdmin):
@@ -35,9 +35,9 @@ class FabricAdmin(admin.ModelAdmin):
 
     def import_csv(self, request):
         if request.method == "POST":
-            csv_file = request.FILES["csv_file"]
-            reader = csv.reader(csv_file)
-            import_csv_data(csv_file)
+            archivo_csv = request.FILES["archivo_csv"]
+            reader = csv.reader(archivo_csv)
+            import_csv_data(archivo_csv)
             self.message_user(request, "Your csv file has been imported")
             return redirect("..")
         form = CsvImportForm()
