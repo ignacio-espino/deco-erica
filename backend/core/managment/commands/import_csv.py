@@ -37,8 +37,9 @@ def import_csv_data(csv_file):
 
     for row in reader:
         try:
-            _code, _price, _name = row
-            Fabric.update_price(code=_code, name=_name, price=Decimal(_price.replace(',', '')))
+            _category, _code, _name, _description_width, _price, = row
+            Fabric.update_price(code=_code, name=_name, price=Decimal(_price.replace(',', '')),
+                                description_width=Decimal(_description_width.replace(',', '.')), category=_category)
             print(f'Datos cargados para {_name}')
         except Exception as e:
             print(f'Error al cargar la fila: {row}. Error: {e}')
