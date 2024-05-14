@@ -10,6 +10,7 @@ from core.models.sewing_method import SewingMethod
 
 from core.models.decoerica_settings import DecoEricaSettings
 
+
 class CalculatorCommand(Command):
     def __init__(self, data) -> None:
         self._data = data
@@ -32,6 +33,7 @@ class CalculatorCommand(Command):
         upholster_entries = len(self._data['upholsterEntries'])
         for index in range(amount_of_entries):
             entry = self._data['entries'][index]
+            entry = self._convert_values_to_decimal(entry)
             data_entry = entry
             system_price = calculator.calculate_system_price(entry)
             taylor_price = calculator.calculate_taylor_price(entry)
@@ -73,6 +75,12 @@ class CalculatorCommand(Command):
         }
         new_data.append({"totals": totals})
         result.set_object(new_data)
+
+    def _convert_values_to_decimal(self, entry):
+        entry['width'] = Decimal(entry['width'])
+        entry['height'] = Decimal(entry['height'])
+        entry['quantity'] = Decimal(entry['quantity'])
+        return entry
 
 
 class Calculator:
