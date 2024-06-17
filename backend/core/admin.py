@@ -77,19 +77,6 @@ class QuoteAdmin(admin.ModelAdmin):
     inlines = [CurtainQuoteEntryInline, UpholsterQuoteEntryInline]
     readonly_fields = ('fecha',)
 
-    actions = ['crear_venta']
-
-    def crear_venta(self, request, queryset):
-        for cotizacion in queryset:
-
-            import urllib.request
-            urll = f"/crear_venta/{cotizacion.id}/"
-            req = urllib.request.Request(urll, method='POST')
-            with urllib.request.urlopen(req):
-                pass  # Procesa la respuesta si es necesario
-
-    crear_venta.short_description = "Convertir en Venta"
-
     def fecha(self, obj):
         return obj.date().strftime('%d-%m-%Y')
 
