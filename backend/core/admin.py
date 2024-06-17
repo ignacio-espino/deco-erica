@@ -80,6 +80,11 @@ class QuoteAdmin(admin.ModelAdmin):
     def fecha(self, obj):
         return obj.date().strftime('%d-%m-%Y')
 
+    def get_readonly_fields(self, request, obj=None):
+        if obj:
+            return ['_customer', '_date']
+        return super().get_readonly_fields(request, obj)
+
 
 class SewingAdmin(admin.ModelAdmin):
     pass
