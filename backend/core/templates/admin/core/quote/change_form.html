@@ -2,9 +2,11 @@
 
 {% block object-tools %}
     {{ block.super }}
-    <form action="{% url 'crear_venta_desde_cotizacion' original.id %}" method="post">
-        {% csrf_token %}
-        <input type="submit" value="Crear Venta">
-    </form>
+    {% if original and original.id %}
+        <form action="{% url 'crear_venta_desde_cotizacion' original.id %}" method="post">
+            {% csrf_token %}
+            <input type="submit" value="Crear Venta">
+        </form>
+    {% endif %}
 {% endblock %}
 
