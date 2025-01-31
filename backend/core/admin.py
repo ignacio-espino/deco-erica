@@ -62,6 +62,11 @@ class FoamAdmin(admin.ModelAdmin):
 class SaleAdmin(admin.ModelAdmin):
     list_display = ('__str__', '_tracking_state', '_fabric_requested', '_systems_requested', '_order_shipped', '_delivery_date')
 
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        # seller deberia ser una fk a un user de verdad, no un campo string
+        return qs.filter(_quote___seller=request.user)
+
 
 class CurtainQuoteEntryInline(admin.TabularInline):
     model = CurtainQuoteEntry
