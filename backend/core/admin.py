@@ -85,6 +85,11 @@ class QuoteAdmin(admin.ModelAdmin):
             return ['_customer', '_date']
         return super().get_readonly_fields(request, obj)
 
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        # seller deberia ser una fk a un user de verdad, no un campo string
+        return qs.filter(_seller=request.user)
+
 
 class SewingAdmin(admin.ModelAdmin):
     pass
