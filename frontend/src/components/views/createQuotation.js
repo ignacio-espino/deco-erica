@@ -88,6 +88,7 @@ export class CreateQuotationView extends Component {
                 sewing: porductsDetail['sewing_methods'],
                 availableProducts: porductsDetail['fabrics'],
                 foam: porductsDetail['foams'],
+                seller: this.props.username
             });
         }
     }
